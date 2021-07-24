@@ -25,10 +25,12 @@ public class PlayerMonster extends Monster{
     }
     
     @Override
-    public void attack(int attackNumber)
+    public void attack(int attackNumber, Monster target)
     {
         //the integer passed to this method is the attack, 1-4, that the player wants to do
         //when an attack button is pressed, whatever number that button is passed here
+
+        //the target is the monster that will defend against the attack...
 
         if(monsterChoice == 1) 
         {

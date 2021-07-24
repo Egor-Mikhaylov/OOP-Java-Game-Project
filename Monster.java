@@ -77,7 +77,7 @@ public abstract class Monster {
 
 
 
-    public abstract void attack(int attackNumber); //a monster overrides this function for their attacks
+    public abstract void attack(int attackNumber, Monster target); //a monster overrides this function for their attacks
 
 
 
