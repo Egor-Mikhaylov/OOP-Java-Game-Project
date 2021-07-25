@@ -10,8 +10,15 @@
 *   Date First Created: 7-23-2021
 *
 */
+
+//  Examples
+//
+//  EnemyMonster.BasicEnemies b = EnemyMonster.BasicEnemies.BULL;
+
+
 public class Game {
     public static void main(String[] args) throws Exception {
         System.out.println("Hello, World!");
+        
     }
 }

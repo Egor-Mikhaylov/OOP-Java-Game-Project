@@ -13,6 +13,7 @@
 *
 */
 import java.util.Random;
+import java.util.Vector;
 
 public abstract class Monster {
 
@@ -32,7 +33,9 @@ public abstract class Monster {
     private int attacks; //holds the number of attacks that the monster can do
                         //goes from 1 - 4 for players and the boss, 1-2 for basic enemies, the monster attack method includes this as a parameter
 
-    private boolean alive;
+    private boolean alive; //true for alive, false for dead
+
+    private Vector<Effect> effectsVector; //this vector holds all active effects for this monster
 
     //setters for monster name and stats
     final void setName(String n) { name = n;}
@@ -71,6 +74,8 @@ public abstract class Monster {
         defense = def;
         dodge = dod;
         attacks = att;
+
+        effectsVector.clear();
 
         alive = true;
     }
@@ -126,6 +131,32 @@ public abstract class Monster {
     }
 
 
+    //only call this method at the end of a turn, and only call this once per monster in a fight
+    public void applyEffects()
+    {
+        //go through all effect on this monster and apply them
+        
+        for(Effect e : effectsVector) 
+        {
+            e.applyEffect();
+        }
+
+
+        //       use this to add a new effect to the effectVector vector
+
+        //effectsVector.add(new Effect(Effect.EffectType.ATTACK2_COOLDOWN, 2));
+
+        
+        //go through all effects and if duration == 0, remove it from the vector
+        for(Effect e : effectsVector) 
+        {
+            if(e.getDuration() == 0)
+            {
+                effectsVector.remove(e);
+            }
+        }
+        
+    }
 
 
 
