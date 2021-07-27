@@ -29,6 +29,9 @@ public class Effect {
     
     private int duration; //when this reaches 0, remove this effect from the vector list
 
+    private Monster owner; //this holds a reference to the monster affected
+    //use this variable to apply the effect to the owning monster
+
     public enum EffectType
     {
         ATTACK2_COOLDOWN,
@@ -41,8 +44,9 @@ public class Effect {
     private EffectType thisEffect; //this determines what action will be taken every turn
 
 
-    public Effect(EffectType et, int dur) //when an effet is created / added, the type and duration is sent over
+    public Effect(Monster m, EffectType et, int dur) //when an effet is created / added, the owner monster, type, and duration is sent over
     {
+        owner = m;
         thisEffect = et;
 
         if(dur < 1)
@@ -66,11 +70,14 @@ public class Effect {
     {
         duration--; //the duration will always be at least 1
 
+        
+
         switch(thisEffect)
         {
             case ATTACK2_COOLDOWN:
             {
             //no active component to this effect, only blocks the player from using this ability while under the effect
+            
             }
             case ATTACK3_COOLDOWN:
             {
