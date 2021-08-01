@@ -66,6 +66,8 @@ public abstract class Monster {
 
     final boolean getAlive(){return alive;}
 
+    final Vector<Effect> getEffectsVector(){return effectsVector;}
+
 
     //Monster superclass constructor
     public Monster(String n, float h, float dam, int crit, float def, int dod, int att){

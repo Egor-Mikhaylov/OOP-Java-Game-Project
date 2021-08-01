@@ -74,13 +74,13 @@ public class EnemyMonster extends Monster{
             {
                 case 1: //Normal: Sting (high damage)
                 {
-                  target.defend(1.5*self.getDamage());
+                  target.defend((float) (1.5*self.getDamage()));
                 }
                 case 2: //Special: Slash (Medium damage + bleed)
                 {
-                  self.effectsVector.add(new Effect(Effect.EffectType.ATTACK2_COOLDOWN, 2));
-                  target.defend(1.0*self.getDamage());
-                  target.effectsVector.add(new Effect(Effect.EffectType.Bleed, 6));
+                  self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK2_COOLDOWN, 2));
+                  target.defend((float) (1.0*self.getDamage()));
+                  target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffBleed, 6));
                 }
                 
             }
@@ -96,24 +96,26 @@ public class EnemyMonster extends Monster{
             {
                 case 1: //Normal: Croak (low damage)
                 {
-                  target.defend(0.5*self.getDamage());
+                  target.defend((float) (0.5*self.getDamage()));
                 }
                 case 2: //Special: Sudden Attack (50% chance to deal 1x damage, 25% to deal 0x, 20% to deal 1.5x, 5% to deal 3x)
                 {
-                  self.effectsVector.add(new Effect(Effect.EffectType.ATTACK2_COOLDOWN, 2));
+                  self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK2_COOLDOWN, 2));
+
                   Random random = new Random();
                   int rand = random.nextInt(101);
+                  
                   if(rand >= 0 && rand <= 49) {
-                    target.defend(1.0*self.getDamage());
+                    target.defend((float) (1.0*self.getDamage()));
                   }
                   if(rand >= 50 && rand <= 74) {
-                    target.defend(0.0*self.getDamage());
+                    target.defend((float) (0.0*self.getDamage()));
                   }
                   if(rand >= 75 && rand <= 95) {
-                    target.defend(1.5*self.getDamage());
+                    target.defend((float) (1.5*self.getDamage()));
                   }
                   if(rand >= 96 && rand <= 100) {
-                    target.defend(3.0*self.getDamage());
+                    target.defend((float) (3.0*self.getDamage()));
                   }
                 }
 
@@ -130,12 +132,12 @@ public class EnemyMonster extends Monster{
             {
                 case 1: //Normal: Bite (Med DMG)
                 {
-                  target.defend(1.0*self.getDamage());
+                  target.defend((float) (1.0*self.getDamage()));
                 }
                 case 2: //Special: Hide in Shadows (Dodge+)
                 {
-                  self.effectsVector.add(new Effect(Effect.EffectType.ATTACK2_COOLDOWN, 2));
-                  self.effectsVector.add(new Effect(Effect.EffectType.buffDodge, 3));
+                  self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK2_COOLDOWN, 2));
+                  self.getEffectsVector().add(new Effect(self, Effect.EffectType.buffDodge, 3));
                 }
 
             }
@@ -150,12 +152,12 @@ public class EnemyMonster extends Monster{
             {
                 case 1: //Normal: Charge (Med DMG)
                 {
-                  target.defend(1.0*self.getDamage());
+                  target.defend((float) (1.0*self.getDamage()));
                 }
                 case 2: //Special: Rampage! (Lower Enemy Def for 2 Turns)
                 {
-                  self.effectsVector.add(new Effect(Effect.EffectType.ATTACK2_COOLDOWN, 2));
-                  target.effectsVector.add(new Effect(Effect.EffectType.debuffDefense, 2));
+                  self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK2_COOLDOWN, 2));
+                  target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffDefense, 2));
                 }
 
             }
@@ -170,12 +172,12 @@ public class EnemyMonster extends Monster{
             {
                 case 1: //Normal: Fling Slime (Low DMG)
                 {
-                  target.defend(0.5*self.getDamage());
+                  target.defend((float) (0.5*self.getDamage()));
                 }
                 case 2: //Special: Poison Spit (No DMG + Poison effect on Enemy)
                 {
-                  self.effectsVector.add(new Effect(Effect.EffectType.ATTACK2_COOLDOWN, 2));
-                  target.effectsVector.add(new Effect(Effect.EffectType.debuffPoison, 4));
+                  self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK2_COOLDOWN, 2));
+                  target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffPoison, 4));
                 }
             }
         }

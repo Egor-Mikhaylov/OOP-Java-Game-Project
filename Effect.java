@@ -1,3 +1,4 @@
+
 /*  
 *   Effect class
 *
@@ -39,18 +40,19 @@ public class Effect {
     {
         ATTACK2_COOLDOWN,
         ATTACK3_COOLDOWN,
-        ATTACK4_COOLDOWN;
-        debuff%HealthLost;
-        debuffDodge;
-        debuffPoison;
-        debuffBleed;
-        debuffBurn;
-        debuffStrongBurn;
-        debuffDefense;
-        debuffDamage;
-        buffAttack;
-        buffDefense;
-        buffDodge;
+        ATTACK4_COOLDOWN,
+        debuffPercentageHealthLost,
+        debuffDodge,
+        debuffPoison,
+        debuffBleed,
+        debuffBurn,
+        debuffStrongBurn,
+        debuffDefense,
+        debuffDamage,
+        debuffVenomBurst,
+        buffDamage,
+        buffDefense,
+        buffDodge,
         buffHeal;
         //add more effects to this enum as they are created, then add their effect per turn below.   
     }
@@ -101,73 +103,108 @@ public class Effect {
             //no active component to this effect, only blocks the player from using this ability while under the effect
             }
 
-            case debuff%HealthLost: 
+            case debuffPercentageHealthLost: 
             {
-              m.setHealth(m.getHealth()-(m.getMaxHealth()*.1)); //10% health per turn
+              owner.setHealth((float) (owner.getHealth()-(owner.getMaxHealth()*.1))); //10% health per turn
             }
 
             case debuffDodge: 
             {
-              m.setDodge(m.getDodge()*.5); //50% decrease to dodge
+              owner.setDodge((int) (owner.getDodge()*.5)); //50% decrease to dodge
             }
 
             case debuffPoison: 
             {
-              m.setHealth(m.getHealth()-(10)); //-8 health per turn (medium duration)
+              owner.setHealth((float) (owner.getHealth()-(10))); //-8 health per turn (medium duration)
             }
 
             case debuffBleed: 
             {
-              m.setHealth(m.getHealth()-(10)); //-4 health per turn (long duration)
+              owner.setHealth((float) (owner.getHealth()-(10))); //-4 health per turn (long duration)
             }
 
             case debuffBurn: 
             {
-              m.setHealth(m.getHealth()-(10)); //-12 health per turn(short duration)
+              owner.setHealth((float) (owner.getHealth()-(10))); //-12 health per turn(short duration)
             }
 
             case debuffStrongBurn: 
             {
-              m.setHealth(m.getHealth()-(10)); //-25 health per turn (short but deadly)
+              owner.setHealth((float) (owner.getHealth()-(10))); //-25 health per turn (short but deadly)
             }
 
             case debuffDefense: 
             {
-              m.setDefense(m.getDefense()*.5); //50% decrease to defense
+              owner.setDefense((float) (owner.getDefense()*.5)); //50% decrease to defense
             }
 
             case debuffDamage: 
             {
-              m.setDamage(m.getDamage()*.75); //25% decrease to damage
+              owner.setDamage((float) (owner.getDamage()*.75)); //25% decrease to damage
             }
 
-            case buffAttack: 
+            case buffDamage: 
             {
-              m.setDamage(m.getDamage()*1.3;//30% increase to damage
+              owner.setDamage((float) (owner.getDamage()*1.3));//30% increase to damage
             }
 
             case buffDefense: 
             {
-              m.setDefense(m.getDefense()*.1.3); //30% increase to defense
+              owner.setDefense((float) (owner.getDefense()* 1.3)); //30% increase to defense
             }
 
             case buffDodge: 
             {
-              m.setDodge(m.getDodge()*1.5); //50% increase to dodge
+              owner.setDodge((int) (owner.getDodge()*1.5)); //50% increase to dodge
             }
 
             case buffHeal: 
             {
-              if(m.getHealth()+(m.getMaxHealth()*.25) >= m.getMaxHealth()) {
-                m.setHealth(m.getMaxHealth()); //If adding 25% health will go over the cap, set the health to full instead.
+              if(owner.getHealth()+(owner.getMaxHealth()*.25) >= owner.getMaxHealth()) {
+                owner.setHealth(owner.getMaxHealth()); //If adding 25% health will go over the cap, set the health to full instead.
               }
               else {
-                m.setHealth(m.getHealth()+(m.getMaxHealth()*.25)); //25% health for 1 turn
+                owner.setHealth((float) (owner.getHealth()+(owner.getMaxHealth()*.25))); //25% health for 1 turn
               }
+            }
+
+            case debuffVenomBurst:
+            {
+              float baseDmg = (float) 7.5; //change this to balance
+
+              //go through all debuffs in this monster's vector, ignoring cooldowns, and double baseDmg for every one
+              for(Effect e : owner.getEffectsVector())
+              {
+                  if(e.getThisEffect() == EffectType.ATTACK2_COOLDOWN)
+                  {
+                    //ignore
+                  }
+                  else if(e.getThisEffect() == EffectType.ATTACK3_COOLDOWN)
+                  {
+                    //ignore
+                  }
+                  else if(e.getThisEffect() == EffectType.ATTACK4_COOLDOWN)
+                  {
+                    //ignore
+                  }
+                  else if(e.getThisEffect() == EffectType.debuffVenomBurst)
+                  {
+                    //ignore itself?
+                  }
+                  else
+                  {
+                    baseDmg *= 1.75; //multiply base damage for every debuff on this monster
+                  }
+              }
+
+              owner.setHealth(owner.getHealth() - baseDmg);
+
+
             }
 
             //keep adding cases as more effects are created
         }
+
 
     }
     
