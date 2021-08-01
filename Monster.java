@@ -11,6 +11,9 @@
 *   Author: Isaac Perez
 *   Date First Created: 7-23-2021
 *
+*
+*   Editor: Egor Mikhaylov
+*
 */
 import java.util.Random;
 import java.util.Vector;
@@ -82,7 +85,7 @@ public abstract class Monster {
 
 
 
-    public abstract void attack(int attackNumber, Monster target); //a monster overrides this function for their attacks
+    public abstract void attack(int attackNumber, Monster target, Monster self); //a monster overrides this function for their attacks
 
 
 
