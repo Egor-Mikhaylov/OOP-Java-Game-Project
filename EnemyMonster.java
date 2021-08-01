@@ -12,7 +12,12 @@
 *   Author: Isaac Perez
 *   Date First Created: 7-24-2021
 *
+*
+*   Editor: Egor Mikhaylov
+*
 */
+
+import java.util.Random;
 
 public class EnemyMonster extends Monster{
     
@@ -46,12 +51,19 @@ public class EnemyMonster extends Monster{
 
 
     @Override
-    public void attack(int attackNumber, Monster target)
+    public void attack(int attackNumber, Monster target, Monster self)
     {
         //the integer passed to this method is the attack, 1-2, the enemy is going to do
         //whenever it is an enemies turn to attack, the number (1 or 2), of that attack will be sent here
 
         //the target is the monster that will defend against the attack...
+
+        //Needs Rebalance:
+        //(Damage)
+        //Very High: 300% dmg
+        //High: 150% dmg
+        //Med: 100% dmg
+        //Low: 50% dmg
 
         if(enemyType == BasicEnemies.WASP) 
         {
@@ -60,13 +72,15 @@ public class EnemyMonster extends Monster{
 
             switch(attackNumber) //the attack number is passed as a parameter
             {
-                case 1:
+                case 1: //Normal: Sting (high damage)
                 {
-
+                  target.defend(1.5*self.getDamage());
                 }
-                case 2:
+                case 2: //Special: Slash (Medium damage + bleed)
                 {
-
+                  self.effectsVector.add(new Effect(Effect.EffectType.ATTACK2_COOLDOWN, 2));
+                  target.defend(1.0*self.getDamage());
+                  target.effectsVector.add(new Effect(Effect.EffectType.Bleed, 6));
                 }
                 
             }
@@ -80,13 +94,27 @@ public class EnemyMonster extends Monster{
 
             switch(attackNumber) //the attack number is passed as a parameter
             {
-                case 1:
+                case 1: //Normal: Croak (low damage)
                 {
-
+                  target.defend(0.5*self.getDamage());
                 }
-                case 2:
+                case 2: //Special: Sudden Attack (50% chance to deal 1x damage, 25% to deal 0x, 20% to deal 1.5x, 5% to deal 3x)
                 {
-
+                  self.effectsVector.add(new Effect(Effect.EffectType.ATTACK2_COOLDOWN, 2));
+                  Random random = new Random();
+                  int rand = random.nextInt(101);
+                  if(rand >= 0 && rand <= 49) {
+                    target.defend(1.0*self.getDamage());
+                  }
+                  if(rand >= 50 && rand <= 74) {
+                    target.defend(0.0*self.getDamage());
+                  }
+                  if(rand >= 75 && rand <= 95) {
+                    target.defend(1.5*self.getDamage());
+                  }
+                  if(rand >= 96 && rand <= 100) {
+                    target.defend(3.0*self.getDamage());
+                  }
                 }
 
             }
@@ -100,13 +128,14 @@ public class EnemyMonster extends Monster{
 
             switch(attackNumber) //the attack number is passed as a parameter
             {
-                case 1:
+                case 1: //Normal: Bite (Med DMG)
                 {
-
+                  target.defend(1.0*self.getDamage());
                 }
-                case 2:
+                case 2: //Special: Hide in Shadows (Dodge+)
                 {
-
+                  self.effectsVector.add(new Effect(Effect.EffectType.ATTACK2_COOLDOWN, 2));
+                  self.effectsVector.add(new Effect(Effect.EffectType.buffDodge, 3));
                 }
 
             }
@@ -119,13 +148,14 @@ public class EnemyMonster extends Monster{
 
             switch(attackNumber) //the attack number is passed as a parameter
             {
-                case 1:
+                case 1: //Normal: Charge (Med DMG)
                 {
-
+                  target.defend(1.0*self.getDamage());
                 }
-                case 2:
+                case 2: //Special: Rampage! (Lower Enemy Def for 2 Turns)
                 {
-
+                  self.effectsVector.add(new Effect(Effect.EffectType.ATTACK2_COOLDOWN, 2));
+                  target.effectsVector.add(new Effect(Effect.EffectType.debuffDefense, 2));
                 }
 
             }
@@ -138,13 +168,14 @@ public class EnemyMonster extends Monster{
 
             switch(attackNumber) //the attack number is passed as a parameter
             {
-                case 1:
+                case 1: //Normal: Fling Slime (Low DMG)
                 {
-
+                  target.defend(0.5*self.getDamage());
                 }
-                case 2:
+                case 2: //Special: Poison Spit (No DMG + Poison effect on Enemy)
                 {
-
+                  self.effectsVector.add(new Effect(Effect.EffectType.ATTACK2_COOLDOWN, 2));
+                  target.effectsVector.add(new Effect(Effect.EffectType.debuffPoison, 4));
                 }
             }
         }

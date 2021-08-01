@@ -1,3 +1,4 @@
+
 /*  
 *   PlayerMonster class
 *
@@ -18,6 +19,9 @@
 *
 *   Author: Isaac Perez
 *   Date First Created: 7-23-2021
+*
+*
+*   Editor: Egor Mikhaylov
 *
 */
 
@@ -59,7 +63,7 @@ public class PlayerMonster extends Monster{
     }
     
     @Override
-    public void attack(int attackNumber, Monster target)
+    public void attack(int attackNumber, Monster target, Monster self)
     {
         //the integer passed to this method is the attack, 1-4, that the player wants to do
         //when an attack button is pressed, whatever number that button is passed here
@@ -72,21 +76,28 @@ public class PlayerMonster extends Monster{
 
             switch(attackNumber) //the attack number is passed as a parameter
             {
-                case 1:
+                case 1: //Normal: Bite (Med DMG + Burn)
                 {
+                  target.defend(1.0*self.getDamage());
+                  target.effectsVector.add(new Effect(Effect.EffectType.debuffBurn, 1));
+                }
+                case 2: //Special: Polish Scales (Def+)
+                {
+                  self.effectsVector.add(new Effect(Effect.EffectType.ATTACK2_COOLDOWN, 2));
+                  self.effectsVector.add(new Effect(Effect.EffectType.buffDefense, 3));
 
                 }
-                case 2:
+                case 3: //Special: Stomp! (Enemy Def-)
                 {
+                  self.effectsVector.add(new Effect(Effect.EffectType.ATTACK3_COOLDOWN, 4));
+                  target.effectsVector.add(new Effect(Effect.EffectType.debuffDefense, 4));
 
                 }
-                case 3:
+                case 4: //Ultimate: Flames of Destruction (High DMG + Strong Burn)
                 {
-
-                }
-                case 4:
-                {
-
+                  target.defend(1.5*self.getDamage());
+                  self.effectsVector.add(new Effect(Effect.EffectType.ATTACK4_COOLDOWN, 6));
+                  target.effectsVector.add(new Effect(Effect.EffectType.debuffStrongBurn, 2));
                 }
             }
 
@@ -99,21 +110,31 @@ public class PlayerMonster extends Monster{
 
             switch(attackNumber) //the attack number is passed as a parameter
             {
-                case 1:
+                case 1: //Normal: Bite (Low DMG + Bleed)
                 {
+                  target.defend(0.5*self.getDamage());
+                  target.effectsVector.add(new Effect(Effect.EffectType.debuffBleed, 6));
 
                 }
-                case 2:
+                case 2: //Special: Venomous Bite (Low DMG + Poison)
                 {
+                  target.defend(0.5*self.getDamage());
+                  self.effectsVector.add(new Effect(Effect.EffectType.ATTACK2_COOLDOWN, 2));
+                  target.effectsVector.add(new Effect(Effect.EffectType.debuffPoison, 3));
 
                 }
-                case 3:
+                case 3: //Special: Sharp Fangs (Low DMG + Enemy Attack- + Attack+)
                 {
+                target.defend(0.5*self.getDamage());
+                self.effectsVector.add(new Effect(Effect.EffectType.ATTACK3_COOLDOWN, 4));
+                target.effectsVector.add(new Effect(Effect.EffectType.debuffDamage, 2));
+                self.effectsVector.add(new Effect(Effect.EffectType.buffDamage, 3));
 
                 }
-                case 4:
+                case 4: //Ultimate: Venom Burst! (No Base DMG, 2x Base Damage for each debuff on the Enemy)
                 {
-
+                  self.effectsVector.add(new Effect(Effect.EffectType.ATTACK4_COOLDOWN, 6));
+                  target.effectsVector.add(new Effect(Effect.EffectType.debuffVenomBurst, 1));
                 }
             }
 
@@ -126,21 +147,30 @@ public class PlayerMonster extends Monster{
 
             switch(attackNumber) //the attack number is passed as a parameter
             {
-                case 1:
+                case 1: //Normal: Charge (Med DMG + Enemy Def-)
                 {
+                  target.defend(1.0*self.getDamage());
+                  target.effectsVector.add(new Effect(Effect.EffectType.debuffDefense, 1));
 
                 }
-                case 2:
+                case 2: //Special: Howl (Low DMG + Enemy DMG-)
                 {
+                  target.defend(0.5*self.getDamage());
+                  self.effectsVector.add(new Effect(Effect.EffectType.ATTACK2_COOLDOWN, 2));
+                  target.effectsVector.add(new Effect(Effect.EffectType.debuffDamage, 2));
 
                 }
-                case 3:
+                case 3: //Special: Heal (Heal 25% of health)
                 {
+                  self.effectsVector.add(new Effect(Effect.EffectType.ATTACK3_COOLDOWN, 4));
+                  self.effectsVector.add(new Effect(Effect.EffectType.buffHeal, 1));
 
                 }
-                case 4:
+                case 4: //Ultimate: Berserk (5x Damage + Armor Debuff) 
                 {
-
+                  target.defend(5.0*self.getDamage());
+                  self.effectsVector.add(new Effect(Effect.EffectType.ATTACK4_COOLDOWN, 6));
+                  self.effectsVector.add(new Effect(Effect.EffectType.debuffDefense, 3));
                 }
             }
         }
