@@ -1,14 +1,15 @@
 /*  
 *   Game class
 *
-*   This class contains main, it also contains all functions necessary to handle game logic.
-*   Methods such as calculating damage as well as creating a monster to fight.
+*   This class contains only creates a GUI object, which contains all game logic.
 *   
 *   Each game will consist of 5 fights total, 4 normal and then a final boss fight
 *
-*   Author: Isaac Perez
-*   Date First Created: 7-23-2021
-*
+* @author  Isaac Perez
+
+* @version 1.0
+
+* @since   2021-07-23
 */
 
 //  Examples
@@ -18,7 +19,10 @@
 
 public class Game {
     public static void main(String[] args) throws Exception {
-        System.out.println("Hello, World!");
+       
+        GUI gui = new GUI();
+
+        //update a text area whenever something happens, such as using an attack
         
     }
 }

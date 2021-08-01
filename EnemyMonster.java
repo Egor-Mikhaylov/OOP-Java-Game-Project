@@ -20,13 +20,17 @@ public class EnemyMonster extends Monster{
     {
         WASP, //low health, high damage, low defense, low crit, high dodge - % health damage special
 
-        TOAD, //medium health, low damage, medium defense, medium crit, low dodge - lower crit chance special
+        TOAD, //medium health, low damage, medium defense, high crit, low dodge - increase damage special
 
         CAT, //medium every stat, but high dodge - increase dodge special
 
-        BULL, //high health, medium damage, high defense, no crit, no dodge - lower defense special
+        ELEPHANT, //high health, medium damage, high defense, no crit, no dodge - lower defense special
 
-        SNAIL; //low health, low damage, very high defense, low crit, no dodge - poison special
+        SNAIL, //low health, low damage, very high defense, low crit, no dodge - poison special
+
+        CROCODILE, //med health, medium damage, medium dodge, low crit, low dodge - increase crit chance special
+
+        RHINO; //high health, high damage, low defense, low crit, no dodge - bleeding special
     }
 
 
@@ -107,7 +111,7 @@ public class EnemyMonster extends Monster{
 
             }
         }
-        else if(enemyType == BasicEnemies.BULL)
+        else if(enemyType == BasicEnemies.ELEPHANT)
         {
 
 
@@ -127,6 +131,44 @@ public class EnemyMonster extends Monster{
             }
         }
         else if(enemyType == BasicEnemies.SNAIL)
+        {
+
+
+
+
+            switch(attackNumber) //the attack number is passed as a parameter
+            {
+                case 1:
+                {
+
+                }
+                case 2:
+                {
+
+                }
+            }
+        }
+
+        else if(enemyType == BasicEnemies.CROCODILE)
+        {
+
+
+
+
+            switch(attackNumber) //the attack number is passed as a parameter
+            {
+                case 1:
+                {
+
+                }
+                case 2:
+                {
+
+                }
+            }
+        }
+
+        else if(enemyType == BasicEnemies.RHINO)
         {
 
 
