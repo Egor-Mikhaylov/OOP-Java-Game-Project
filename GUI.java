@@ -62,6 +62,8 @@ public class GUI extends JFrame {
     private Monster player; //this will hold the player's monster
     private Monster enemy; //this will hold the enemy's monster, basic or boss type
 
+    private final String spaces = "\n\n\n\t\t                 ";
+
 
     public GUI()
     {
@@ -118,23 +120,86 @@ public class GUI extends JFrame {
         enemyHPBAR.setForeground(new Color((float)0, (float) 0.8, (float) 0));
         gamePanel.add(enemyHPBAR);
 
-        ImageIcon playerImage = new ImageIcon("images/dragon.png");
-        playerMonsterImage = new JLabel(playerImage);
+        ImageIcon image = new ImageIcon("images/minotaur.png");
+        playerMonsterImage = new JLabel(image);
         playerMonsterImage.setBounds(17, 45, 330, 300);
         
         gamePanel.add(playerMonsterImage);
 
 
-        ImageIcon enemyImage = new ImageIcon("images/snail.png");
-        enemyMonsterImage = new JLabel(enemyImage);
+        image = new ImageIcon("images/gorilla.png");
+        enemyMonsterImage = new JLabel(image);
         enemyMonsterImage.setBounds(357, 45, 330, 300);
 
         gamePanel.add(enemyMonsterImage);
 
 
 
+
+        playerMonsterName = new JLabel("----------------Player Name------------------");
+        playerMonsterName.setBounds(35, 10, 300, 20);
+        playerMonsterName.setHorizontalAlignment(SwingConstants.CENTER);
+        gamePanel.add(playerMonsterName);
+
+
+        enemyMonsterName = new JLabel("----------------Enemy Name------------------");
+        enemyMonsterName.setBounds(380, 10, 300, 20);
+        enemyMonsterName.setHorizontalAlignment(SwingConstants.CENTER);
+        gamePanel.add(enemyMonsterName);
+
+
+
+
+
         //SET ALL COMPONENTS OTHER THAN BUTTONS TO INVISIBLE,
-        //then display the player monster choices to the player
+
+        playerMonsterName.setVisible(false);
+        enemyMonsterName.setVisible(false);
+        playerMonsterImage.setVisible(false);
+        enemyMonsterImage.setVisible(false);
+        playerHPBAR.setVisible(false);
+        enemyHPBAR.setVisible(false);
+
+
+
+
+
+        //display the 3 choices
+        outputTextArea.setText(spaces + "Choose the monster you will fight with!");
+
+
+        image = new ImageIcon("images/dragon_half.png");
+        JLabel dragon = new JLabel(image);
+        dragon.setText("Dragon");
+        dragon.setHorizontalTextPosition(SwingConstants.CENTER);
+        dragon.setVerticalTextPosition(SwingConstants.BOTTOM);
+        dragon.setBounds(40, 120, 165, 170);
+        gamePanel.add(dragon);
+
+        image = new ImageIcon("images/viper_half.png");
+        JLabel viper = new JLabel(image);
+        viper.setText("Viper");
+        viper.setHorizontalTextPosition(SwingConstants.CENTER);
+        viper.setVerticalTextPosition(SwingConstants.BOTTOM);
+        viper.setBounds(268, 120, 165, 170);
+        gamePanel.add(viper);
+
+        image = new ImageIcon("images/minotaur_half.png");
+        JLabel minotuar = new JLabel(image);
+        minotuar.setText("Minotuar");
+        minotuar.setHorizontalTextPosition(SwingConstants.CENTER);
+        minotuar.setVerticalTextPosition(SwingConstants.BOTTOM);
+        minotuar.setBounds(500, 120, 165, 170);
+        gamePanel.add(minotuar);
+
+
+        inputButtons[0].setText("Choose Dragon");
+        inputButtons[1].setText("Choose Viper");
+        inputButtons[2].setText("Choose Minotaur");
+        inputButtons[3].setText(" ");
+
+
+
 
         this.add(gamePanel);
 

@@ -53,7 +53,13 @@ public class Effect {
         buffDamage,
         buffDefense,
         buffDodge,
-        buffHeal;
+        buffHeal,
+        BOSS_BUFF_DAMAGE,
+        BOSS_BUFF_CRIT,
+        BOSS_DEBUFF_DEFENSE,
+        BOSS_DEBUFF_DODGE,
+        BOSS_DEBUFF_BLEED;
+
         //add more effects to this enum as they are created, then add their effect per turn below.   
     }
 
@@ -110,7 +116,7 @@ public class Effect {
 
             case debuffDodge: 
             {
-              owner.setDodge((int) (owner.getDodge()*.5)); //50% decrease to dodge
+              owner.setDodge((int) (owner.getDodge()*.75)); //25% decrease to dodge
             }
 
             case debuffPoison: 
@@ -135,12 +141,12 @@ public class Effect {
 
             case debuffDefense: 
             {
-              owner.setDefense((float) (owner.getDefense()*.5)); //50% decrease to defense
+              owner.setDefense((float) (owner.getDefense()*.75)); //% decrease to defense
             }
 
             case debuffDamage: 
             {
-              owner.setDamage((float) (owner.getDamage()*.75)); //25% decrease to damage
+              owner.setDamage((float) (owner.getDamage()*.90)); //10% decrease to damage
             }
 
             case buffDamage: 
@@ -150,7 +156,7 @@ public class Effect {
 
             case buffDefense: 
             {
-              owner.setDefense((float) (owner.getDefense()* 1.3)); //30% increase to defense
+              owner.setDefense((float) (owner.getDefense()* 1.15)); //15% increase to defense
             }
 
             case buffDodge: 
@@ -200,6 +206,31 @@ public class Effect {
               owner.setHealth(owner.getHealth() - baseDmg);
 
 
+            }
+
+            case BOSS_BUFF_CRIT:
+            {
+              owner.setCritChance((int) (owner.getCritChance() * 1.1)); //boss increases crit by 10%
+            }
+
+            case BOSS_DEBUFF_DEFENSE:
+            {
+              owner.setDefense((float)(owner.getDefense() * .5)); //decrease defense by 50%
+            }
+
+            case BOSS_DEBUFF_DODGE:
+            {
+              owner.setDodge((int) (owner.getDodge() * .5)); //decrease dodge by 50%
+            }
+
+            case BOSS_BUFF_DAMAGE:
+            {
+              owner.setDamage((float)(owner.getDamage() * 1.025)); //increase damage by 2.5%, lasts a bunch of turns
+            }
+            
+            case BOSS_DEBUFF_BLEED:
+            {
+              owner.setHealth((float) (owner.getHealth() - 40.0)); //40 damage per tick
             }
 
             //keep adding cases as more effects are created

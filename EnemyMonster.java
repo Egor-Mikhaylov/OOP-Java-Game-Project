@@ -35,7 +35,9 @@ public class EnemyMonster extends Monster{
 
         CROCODILE, //med health, medium damage, medium dodge, low crit, low dodge - increase crit chance special
 
-        RHINO; //high health, high damage, low defense, low crit, no dodge - bleeding special
+        RHINO, //high health, high damage, low defense, low crit, no dodge - bleeding special
+
+        GORILLA; //final boss, maxed stats pretty much, all abilities explained in BossMonster class
     }
 
 
@@ -46,6 +48,8 @@ public class EnemyMonster extends Monster{
         super(n, h, dam, crit, def, dod, att); // don't need choice, a basic monster has 2 attacks
         enemyType = t;
     }
+
+    public void setEnemyType(BasicEnemies enem){enemyType = enem;}
 
     public BasicEnemies getEnemyType() {return enemyType;}
 
@@ -74,12 +78,12 @@ public class EnemyMonster extends Monster{
             {
                 case 1: //Normal: Sting (high damage)
                 {
-                  target.defend((float) (1.5*self.getDamage()));
+                  target.defend(self ,(float) (1.5*self.getDamage())); //"self" is the enemy that is attacking, the attacker
                 }
                 case 2: //Special: Slash (Medium damage + bleed)
                 {
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK2_COOLDOWN, 2));
-                  target.defend((float) (1.0*self.getDamage()));
+                  target.defend(self ,(float) (1.0*self.getDamage()));
                   target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffBleed, 6));
                 }
                 
@@ -96,7 +100,7 @@ public class EnemyMonster extends Monster{
             {
                 case 1: //Normal: Croak (low damage)
                 {
-                  target.defend((float) (0.5*self.getDamage()));
+                  target.defend(self ,(float) (0.5*self.getDamage()));
                 }
                 case 2: //Special: Sudden Attack (50% chance to deal 1x damage, 25% to deal 0x, 20% to deal 1.5x, 5% to deal 3x)
                 {
@@ -106,16 +110,16 @@ public class EnemyMonster extends Monster{
                   int rand = random.nextInt(101);
                   
                   if(rand >= 0 && rand <= 49) {
-                    target.defend((float) (1.0*self.getDamage()));
+                    target.defend(self ,(float) (1.0*self.getDamage()));
                   }
                   if(rand >= 50 && rand <= 74) {
-                    target.defend((float) (0.0*self.getDamage()));
+                    target.defend(self ,(float) (0.0*self.getDamage()));
                   }
                   if(rand >= 75 && rand <= 95) {
-                    target.defend((float) (1.5*self.getDamage()));
+                    target.defend(self ,(float) (1.5*self.getDamage()));
                   }
                   if(rand >= 96 && rand <= 100) {
-                    target.defend((float) (3.0*self.getDamage()));
+                    target.defend(self ,(float) (3.0*self.getDamage()));
                   }
                 }
 
@@ -132,7 +136,7 @@ public class EnemyMonster extends Monster{
             {
                 case 1: //Normal: Bite (Med DMG)
                 {
-                  target.defend((float) (1.0*self.getDamage()));
+                  target.defend(self ,(float) (1.0*self.getDamage()));
                 }
                 case 2: //Special: Hide in Shadows (Dodge+)
                 {
@@ -152,7 +156,7 @@ public class EnemyMonster extends Monster{
             {
                 case 1: //Normal: Charge (Med DMG)
                 {
-                  target.defend((float) (1.0*self.getDamage()));
+                  target.defend(self ,(float) (1.0*self.getDamage()));
                 }
                 case 2: //Special: Rampage! (Lower Enemy Def for 2 Turns)
                 {
@@ -172,7 +176,7 @@ public class EnemyMonster extends Monster{
             {
                 case 1: //Normal: Fling Slime (Low DMG)
                 {
-                  target.defend((float) (0.5*self.getDamage()));
+                  target.defend(self ,(float) (0.5*self.getDamage()));
                 }
                 case 2: //Special: Poison Spit (No DMG + Poison effect on Enemy)
                 {

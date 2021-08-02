@@ -93,7 +93,7 @@ public abstract class Monster {
 
 
 
-    final void defend(float attackDamage)
+    final boolean defend(Monster attacker, float attackDamage)
     {   //all monsters process attacks the same way, the damage is calculated first, then passed to this function
         //this function first rolls the dodge chance, if it succeeds then no damage is dealt, if not it get processed further
         //then the damage is reduced based on the defense rating of the monster
@@ -103,6 +103,7 @@ public abstract class Monster {
         //random interger from 0-100, random.nextInt(101);
 
         boolean monsterDodged = false;
+        boolean criticalHit = false;
 
         if(random.nextInt(101) <= dodge)
         {
@@ -111,6 +112,18 @@ public abstract class Monster {
 
         if(monsterDodged == false) //failed to dodge
         {
+
+            //do a critical hit check, take the attacker's crit chance and do a crit roll
+            //if it succeeds, then mulitply the damage
+            //if it fails, do normal damage
+            if(random.nextInt(101) <= attacker.getCritChance())
+            {
+                criticalHit = true;
+                attackDamage *= 2.0; //multiply damage
+            }
+
+
+            //calculate damage
             if(attackDamage - defense < 1.0)
             {
                 health -= 1.0; //if defense negates damage, then 1 damage is dealt
@@ -120,6 +133,17 @@ public abstract class Monster {
                 health -= (attackDamage - defense);
             }
         }
+
+
+
+
+
+        //output the result of the attack to the text area, such as if the attack missed or critically hit, and the damage dealt.
+
+
+
+
+
 
 
         //check if health <= 0, if it is, then that monster is dead, change alive boolean to false
@@ -132,7 +156,7 @@ public abstract class Monster {
             alive = false;
         }
 
-
+        return monsterDodged; //true if the attack missed, false if the attack landed
     }
 
 

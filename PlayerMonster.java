@@ -78,7 +78,7 @@ public class PlayerMonster extends Monster{
             {
                 case 1: //Normal: Bite (Med DMG + Burn)
                 {
-                  target.defend((float) (1.0*self.getDamage()));
+                  target.defend(self ,(float) (1.0*self.getDamage()));
                   target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffBurn, 1));
                 }
                 case 2: //Special: Polish Scales (Def+)
@@ -95,7 +95,7 @@ public class PlayerMonster extends Monster{
                 }
                 case 4: //Ultimate: Flames of Destruction (High DMG + Strong Burn)
                 {
-                  target.defend((float) (1.5*self.getDamage()));
+                  target.defend(self ,(float) (1.5*self.getDamage()));
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK4_COOLDOWN, 6));
                   target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffStrongBurn, 2));
                 }
@@ -112,20 +112,20 @@ public class PlayerMonster extends Monster{
             {
                 case 1: //Normal: Bite (Low DMG + Bleed)
                 {
-                  target.defend((float) (0.5*self.getDamage()));
+                  target.defend(self ,(float) (0.5*self.getDamage()));
                   target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffBleed, 6));
 
                 }
                 case 2: //Special: Venomous Bite (Low DMG + Poison)
                 {
-                  target.defend((float) (0.5*self.getDamage()));
+                  target.defend(self ,(float) (0.5*self.getDamage()));
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK2_COOLDOWN, 2));
                   target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffPoison, 3));
 
                 }
                 case 3: //Special: Sharp Fangs (Low DMG + Enemy Attack- + Attack+)
                 {
-                target.defend((float) (0.5*self.getDamage()));
+                target.defend(self ,(float) (0.5*self.getDamage()));
                 self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK3_COOLDOWN, 4));
                 target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffDamage, 2));
                 self.getEffectsVector().add(new Effect(self, Effect.EffectType.buffDamage, 3));
@@ -149,13 +149,13 @@ public class PlayerMonster extends Monster{
             {
                 case 1: //Normal: Charge (Med DMG + Enemy Def-)
                 {
-                  target.defend((float) (1.0*self.getDamage()));
+                  target.defend(self ,(float) (1.0*self.getDamage()));
                   target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffDefense, 1));
 
                 }
                 case 2: //Special: Howl (Low DMG + Enemy DMG-)
                 {
-                  target.defend((float)  (0.5*self.getDamage()));
+                  target.defend(self ,(float)  (0.5*self.getDamage()));
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK2_COOLDOWN, 2));
                   target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffDamage, 2));
 
@@ -168,7 +168,7 @@ public class PlayerMonster extends Monster{
                 }
                 case 4: //Ultimate: Berserk (5x Damage + Armor Debuff) 
                 {
-                  target.defend((float) (5.0*self.getDamage()));
+                  target.defend(self ,(float) (5.0*self.getDamage()));
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK4_COOLDOWN, 6));
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.debuffDefense, 3));
                 }
