@@ -203,14 +203,15 @@ public class EnemyMonster extends Monster{
 
             switch(attackNumber) //the attack number is passed as a parameter
             {
-                case 1:
+                case 1: //normal Chomp (med damage)
                 {
-
+                  target.defend(self ,(float) (1.0*self.getDamage()));
                   break;
                 }
-                case 2:
+                case 2:// special Enrage (DMG+)
                 {
-
+                  self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK2_COOLDOWN, 2));
+                  self.getEffectsVector().add(new Effect(self, Effect.EffectType.buffDamage, 3));
                   break;
                 }
             }
@@ -224,14 +225,17 @@ public class EnemyMonster extends Monster{
 
             switch(attackNumber) //the attack number is passed as a parameter
             {
-                case 1:
+                case 1://normal Pierce (High DMG)
                 {
-
+                  target.defend(self ,(float) (1.5*self.getDamage()));
                   break;
                 }
-                case 2:
+                case 2:// special Gore (High DMG, bleed, dodge+)
                 {
-
+                target.defend(self ,(float) (1.5*self.getDamage()));
+                target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffBleed, 3));
+                self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK2_COOLDOWN, 4));
+                self.getEffectsVector().add(new Effect(self, Effect.EffectType.buffDodge, 3));
                   break;
                 }
             }

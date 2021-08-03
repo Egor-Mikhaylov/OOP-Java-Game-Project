@@ -181,7 +181,7 @@ public class Effect {
 
             case buffDefense: 
             {
-              owner.setDefense((float) (owner.getDefense()* 1.15)); //15% increase to defense
+              owner.setDefense((float) (owner.getDefense()* 1.30)); //30% increase to defense
               
               break;
             }
@@ -195,11 +195,11 @@ public class Effect {
 
             case buffHeal: 
             {
-              if(owner.getHealth()+(owner.getMaxHealth()*.25) >= owner.getMaxHealth()) {
+              if(owner.getHealth()+(owner.getMaxHealth()*.10) >= owner.getMaxHealth()) {
                 owner.setHealth(owner.getMaxHealth()); //If adding 25% health will go over the cap, set the health to full instead.
               }
               else {
-                owner.setHealth((float) (owner.getHealth()+(owner.getMaxHealth()*.25))); //25% health for 1 turn
+                owner.setHealth((float) (owner.getHealth()+(owner.getMaxHealth()*.10))); //25% health for 1 turn
               }
 
               
@@ -208,7 +208,7 @@ public class Effect {
 
             case debuffVenomBurst:
             {
-              float baseDmg = (float) 7.5; //change this to balance
+              float baseDmg = (float) 100; //change this to balance
 
               //go through all debuffs in this monster's vector, ignoring cooldowns, and double baseDmg for every one
               for(Effect e : owner.getEffectsVector())

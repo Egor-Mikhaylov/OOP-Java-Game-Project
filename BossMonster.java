@@ -56,7 +56,7 @@ public class BossMonster extends EnemyMonster{
             }
             case 4: //Ultimate: Primal Supremacy (Extreme DMG, inflicts long term strong bleed)
             {
-              target.defend(self ,(float) (5.0*self.getDamage()));
+              target.defend(self ,(float) (3.0*self.getDamage()));
               self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK4_COOLDOWN, 7));
               target.getEffectsVector().add(new Effect(target, Effect.EffectType.BOSS_DEBUFF_BLEED, 5));
 

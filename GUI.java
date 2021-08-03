@@ -13,17 +13,17 @@ import javax.swing.JFrame; //for window
 import javax.swing.JPanel; //for arranging componenets
 import javax.swing.JLabel; //for button text, player images, and names
 import javax.swing.JButton; //for player input
-import javax.swing.JDialog; //for when the player wins or loses, when the game is reset
 import javax.swing.JProgressBar; //for monster health bars
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants; //constants to arrange components
+import javax.swing.JOptionPane;////for when the player wins or loses, when the game is reset
 
 
 import java.util.Random;
-
 import java.awt.event.*; //handling button events
 
 import java.awt.Color;
+
 import javax.swing.ImageIcon;
 
 public class GUI extends JFrame {
@@ -40,15 +40,12 @@ public class GUI extends JFrame {
 
     private JPanel gamePanel;
 
-    private JLabel buttonText[]; //4 button labels
     private JLabel playerMonsterName;
     private JLabel playerMonsterImage;
     private JLabel enemyMonsterName;
     private  JLabel enemyMonsterImage;
 
     private  JButton inputButtons[]; //four input buttons
-
-    private JDialog alertDialogBox; //use this for when the player wins or loses, then reset the game
 
     private JTextArea outputTextArea; //all actions will be output here
 
@@ -81,6 +78,9 @@ public class GUI extends JFrame {
     private int fightCounter; //holds the fight number, fight == 1 when the first fight of the game is ongoing
 
     private ImageIcon image; //holds a png.
+
+    private Random random; //use to create a seed to generate random numbers
+    private int randomNumber; //holds the randomly generated number
 
 
     public GUI()
@@ -221,6 +221,9 @@ public class GUI extends JFrame {
 
 
 
+
+
+
         this.add(gamePanel);
 
         playerIsChoosingAMonster = true; // button logic switched to choosing a monster
@@ -242,7 +245,7 @@ public class GUI extends JFrame {
                 if(event.getSource() == inputButtons[0]) //first button pressed, Dragon chosen
                 {
                     //create a new player monster
-                    player = new PlayerMonster("Dragon",750,75,10,25,12,4, PlayerMonster.PlayerMonsterChoices.DRAGON);
+                    player = new PlayerMonster("Dragon",750,100,10,45,12,4, PlayerMonster.PlayerMonsterChoices.DRAGON);
                     playerIsChoosingAMonster = false;
 
                     changeGameToFighting(); //change GUI format
@@ -276,7 +279,7 @@ public class GUI extends JFrame {
 
                 else if(event.getSource() == inputButtons[1]) //second button pressed, Viper chosen
                 {
-                    player = new PlayerMonster("Viper",500,55,20,15,20,4, PlayerMonster.PlayerMonsterChoices.VIPER);
+                    player = new PlayerMonster("Viper",500,75,20,40,20,4, PlayerMonster.PlayerMonsterChoices.VIPER);
                     playerIsChoosingAMonster = false;
 
                     
@@ -311,7 +314,7 @@ public class GUI extends JFrame {
 
                 else if(event.getSource() == inputButtons[2]) //third button pressed, Minotaur chosen
                 {
-                    player = new PlayerMonster("Minotaur",900,90,15,5,8,4, PlayerMonster.PlayerMonsterChoices.MINOTAUR);
+                    player = new PlayerMonster("Minotaur",900,125,15,10,8,4, PlayerMonster.PlayerMonsterChoices.MINOTAUR);
                     playerIsChoosingAMonster = false;
 
                     
@@ -347,40 +350,278 @@ public class GUI extends JFrame {
             }
             else if(playerIsChoosingAMonster == false) //game is in fighting phase
             {
+                //clear text log
+                outputTextArea.setText(" ");
 
+                boolean eligibleAttack = false; //true if attack is not on cooldown
 
                 if(event.getSource() == inputButtons[0]) //first button pressed
                 {
-                    
+                    eligibleAttack = true;
 
                     //basic ability used, player attacks first, update enemy HPBAR after attack
+                    player.attack(1, enemy, player); //use ability 1
+
+                }
+
+
+                else if(event.getSource() == inputButtons[1]) //second button pressed
+                {
+
+                    if(player.getAttacks() < 2)
+                    {
+                        //this attack is not unlocked
+                    }
+                    else
+                    {
+                        //attack is available, check if on cooldown
+                        boolean cooldown = false;
+
+                        for(Effect e : player.getEffectsVector())
+                        {
+                            if(e.getThisEffect() == Effect.EffectType.ATTACK2_COOLDOWN)
+                            {
+                                cooldown = true;//cooldown found
+                            }
+                        }
+
+                        if(cooldown == false)
+                        {
+                            eligibleAttack = true;
+                            player.attack(2, enemy, player); //use ability 2 
+                        }
+
+                    }
+
+ 
+                }
+
+
+                else if(event.getSource() == inputButtons[2]) //third button pressed
+                {
+                    if(player.getAttacks() < 3)
+                    {
+                        //this attack is not unlocked
+                    }
+                    else
+                    {
+                        //attack is available, check if on cooldown
+                        boolean cooldown = false;
+
+                        for(Effect e : player.getEffectsVector())
+                        {
+                            if(e.getThisEffect() == Effect.EffectType.ATTACK3_COOLDOWN)
+                            {
+                                cooldown = true;//cooldown found
+                            }
+                        }
+
+                        if(cooldown == false)
+                        {
+                            eligibleAttack = true;
+                            player.attack(3, enemy, player); //use ability 3
+                        }
+
+                    }  
+                }
+
+
+                else if(event.getSource() == inputButtons[3]) //fourth button pressed
+                {
+                    if(player.getAttacks() < 4)
+                    {
+                        //this attack is not unlocked
+                    }
+                    else
+                    {
+                        //attack is available, check if on cooldown
+                        boolean cooldown = false;
+
+                        for(Effect e : player.getEffectsVector())
+                        {
+                            if(e.getThisEffect() == Effect.EffectType.ATTACK4_COOLDOWN)
+                            {
+                                cooldown = true;//cooldown found
+                            }
+                        }
+
+                        if(cooldown == false)
+                        {
+                            eligibleAttack = true;
+                            player.attack(4, enemy, player); //use ability 3
+                        }
+
+                    }   
+                }
+
+
+                if(eligibleAttack == true)
+                {
+
+                    
+                    enemyHPBAR.setValue((int) ((enemy.getHealth() / enemy.getMaxHealth()) * 100)); //update enemy HPBar
 
                     //then the enemy chooses a random attack (1 or 2 for basic enemies) (1-4 for the boss), update player hpbar
+                    random = new Random();
+
+                    if(((EnemyMonster) enemy).getEnemyType() == EnemyMonster.BasicEnemies.GORILLA) //if fighting the boss
+                    {
+                        randomNumber = random.nextInt(4); //generate a number from 0-3
+                        randomNumber++; //make that number 1-4
+                    }
+                    else//the enemy is a basic enemy
+                    {
+                        randomNumber = random.nextInt(2); //generate a number from 0-1
+                        randomNumber++; //make that number 1-2
+                    }
+
+
+                    if(randomNumber == 4)
+                    {
+                        //check if the boss can use this attack, if not, use a normal attack
+                        
+                        for(Effect e : enemy.getEffectsVector())
+                        {
+                            if(e.getThisEffect() == Effect.EffectType.ATTACK4_COOLDOWN)
+                            {
+                                randomNumber = 1;// if this attack is on cooldown, use a normal
+                            }
+                        }
+                    }
+
+                    if(randomNumber == 3)
+                    {
+                        //check if the boss can use this attack, if not, use a normal attack
+                        
+                        for(Effect e : enemy.getEffectsVector())
+                        {
+                            if(e.getThisEffect() == Effect.EffectType.ATTACK3_COOLDOWN)
+                            {
+                                randomNumber = 1;// if this attack is on cooldown, use a normal
+                            }
+                        }
+                    }
+
+                    if(randomNumber == 2)
+                    {
+                        //check if the enemy can use this attack, if not, use a normal attack
+                        
+                        for(Effect e : enemy.getEffectsVector())
+                        {
+                            if(e.getThisEffect() == Effect.EffectType.ATTACK2_COOLDOWN)
+                            {
+                                randomNumber = 1;// if this attack is on cooldown, use a normal
+                            }
+                        }
+                    }
+
+
+                    enemy.attack(randomNumber, player, enemy);//enemy uses the random attack on the player
+                    playerHPBAR.setValue((int) ((player.getHealth() / player.getMaxHealth()) * 100)); //update player HPBar
 
 
                     //afterwards cycle through effect vectors of player(update HPBar) then enemy (update HPbar)
+                    player.applyEffects();
+                    playerHPBAR.setValue((int) ((player.getHealth() / player.getMaxHealth()) * 100)); //update player HPBar
+
+                    enemy.applyEffects();
+                    enemyHPBAR.setValue((int) ((enemy.getHealth() / enemy.getMaxHealth()) * 100)); //update enemy HPBar
+
+
+
 
 
                     //then check if the player is dead, display popup and reset game to 3 choice phase
+                    if(player.getAlive() == false)
+                    {
+                         //player died, show popup, and then reset the game
 
+
+                        JOptionPane.showMessageDialog(gamePanel, "You have died!");
+                         
+
+                        changeGameToThreeChoices();
+                        playerIsChoosingAMonster = true;
+
+
+
+
+
+
+
+                    }
+
+                
                     //then check if enemy is dead, if basic enemy, restore player stats and level up
                     //increase fightCounter, and spawn another enemy and update GUI
 
-                    //if boss is dead, player wins, display popup stating victory then rest the game to 3 choices
-    
+                    if(enemy.getAlive() == false && player.getAlive() == true)
+                    {
+                        //enemy died, check if enemy is a boss
+                        if(((EnemyMonster)enemy).getEnemyType() == EnemyMonster.BasicEnemies.GORILLA) //enemy is a boss
+                        {
+                         //player wins the game, show a victory popup then reset the game to the choose state
+
+
+
+                         JOptionPane.showMessageDialog(gamePanel, "You have won!");
+                         
+
+                         changeGameToThreeChoices();
+                         playerIsChoosingAMonster = true;
+
+
+
+
+
+
+
+                        }
+                        else//enemy is basic
+                        {
+                            //player wins the fight, increment fight counter
+
+                            fightCounter++;
+                            enemy = createEnemy(fightCounter); //create new enemy
+                            //update enemy side
+                            enemyMonsterName.setText(enemy.getName());
+                            enemyMonsterImage.setIcon(getEnemyImage((EnemyMonster)enemy));
+
+
+                            //apply the copy to the player, levelup, then make another copy , reset both hpbars
+                             //BUT REMOVE ALL EFFECTS FIRST
+                            player.getEffectsVector().clear();
+
+                            player = playerBackup;
+                            ((PlayerMonster)player).levelUp();
+                            playerBackup = player;
+
+                            playerHPBAR.setValue((int) ((player.getHealth() / player.getMaxHealth()) * 100)); //update player HPBar
+                            enemyHPBAR.setValue((int) ((enemy.getHealth() / enemy.getMaxHealth()) * 100)); //update enemy HPBar
+
+
+                            //update ability buttons
+                            updateAbilityButtons(((PlayerMonster)player));
+
+
+                        }
+                    }
+
+
+
+
                 }
-                else if(event.getSource() == inputButtons[1]) //second button pressed
-                {
-    
-                }
-                else if(event.getSource() == inputButtons[2]) //third button pressed
-                {
-    
-                }
-                else if(event.getSource() == inputButtons[3]) //fourth button pressed
-                {
-    
-                }
+
+
+
+
+
+
+
+
+
+
+
 
             }
 
@@ -399,6 +640,28 @@ public class GUI extends JFrame {
         //this function hides all GUI components that are not needed to choose a starter
         //and it changes the game to the choosing a starter phase
         //also changes button text to the three choices
+        dragon.setVisible(true);
+        viper.setVisible(true);
+        minotaur.setVisible(true);
+
+        playerMonsterName.setVisible(false);
+        enemyMonsterName.setVisible(false);
+        playerMonsterImage.setVisible(false);
+        enemyMonsterImage.setVisible(false);
+        playerHPBAR.setVisible(false);
+        enemyHPBAR.setVisible(false);
+
+        inputButtons[0].setText("Choose Dragon");
+        inputButtons[1].setText("Choose Viper");
+        inputButtons[2].setText("Choose Minotaur");
+        inputButtons[3].setText(" ");
+
+
+        //display the 3 choices
+        outputTextArea.setText(spaces + "Choose the monster you will fight with!");
+
+        playerHPBAR.setValue(100); //reset player HPBar
+        enemyHPBAR.setValue(100); //reset enemy HPBar
 
 
     }
@@ -420,6 +683,8 @@ public class GUI extends JFrame {
         playerHPBAR.setVisible(true);
         enemyHPBAR.setVisible(true);
 
+       // updateAbilityButtons(((PlayerMonster)player));
+
     }
 
 
@@ -430,8 +695,8 @@ public class GUI extends JFrame {
         //for each number above 1, the multiplier increased by .33
         //for a fightNum of 5, the Gorilla Boss is created and returned
         float statMult = 0;
-        Random random = new Random(); //create new seed
-        int randomNumber;
+        random = new Random(); //create new seed
+        randomNumber = 0;
 
         Monster createdEnemy = new EnemyMonster("Wasp", 300 * statMult, 100 * statMult, (int) (30 * statMult),10 * statMult, (int)(25 * statMult),
                                                  2, EnemyMonster.BasicEnemies.WASP);
@@ -448,15 +713,15 @@ public class GUI extends JFrame {
             }
             if(fightNum == 2)
             {
-                statMult = (float)1.33;
+                statMult = (float)1.25;
             }
             if(fightNum == 3)
             {
-                statMult = (float)1.66;
+                statMult = (float)1.50;
             }
             if(fightNum == 4)
             {
-                statMult = (float)2.0;
+                statMult = (float)1.75;
             }
 
 
@@ -482,7 +747,7 @@ public class GUI extends JFrame {
             }
             else if( randomNumber >= 20 && randomNumber < 30) //cat
             {
-                createdEnemy = new EnemyMonster("Cat", 450 * statMult, 75 * statMult, (int) (25 * statMult),17 * statMult, (int)(20 * statMult),
+                createdEnemy = new EnemyMonster("Cat", 450 * statMult, 75 * statMult, (int) (25 * statMult),17 * statMult, (int)(10 * statMult),
                                                 2, EnemyMonster.BasicEnemies.CAT);
             }
             else if( randomNumber >= 30 && randomNumber < 40) //elephant
@@ -502,7 +767,7 @@ public class GUI extends JFrame {
             }
             else if( randomNumber >= 60 && randomNumber < 70) //rhino
             {
-                createdEnemy = new EnemyMonster("Rhino", 900 * statMult, 125 * statMult, (int) (10 * statMult),15 * statMult, (int)(5 * statMult),
+                createdEnemy = new EnemyMonster("Rhino", 800 * statMult, 90 * statMult, (int) (5 * statMult),7 * statMult, (int)(5 * statMult),
                                                 2, EnemyMonster.BasicEnemies.RHINO);
             }
 
@@ -513,7 +778,7 @@ public class GUI extends JFrame {
 
         if(fightNum == 5) //gorilla boss fight
         {
-            createdEnemy = new BossMonster("Gorilla", 2500, 175, 3, 45, 5, 4);
+            createdEnemy = new BossMonster("Gorilla", 3000, 175, 3, 45, 5, 4);
         }
 
 
@@ -528,41 +793,46 @@ public class GUI extends JFrame {
 
 
 
-    private ImageIcon getEnemyImage(EnemyMonster monster)
+    private ImageIcon getEnemyImage(Monster monster)
     {
-        if(monster.getEnemyType() == EnemyMonster.BasicEnemies.WASP)
+        if(((EnemyMonster) monster).getEnemyType() == EnemyMonster.BasicEnemies.WASP)
         {
             image = new ImageIcon("images/wasp.png");
         }
 
-        if(monster.getEnemyType() == EnemyMonster.BasicEnemies.TOAD)
+        if(((EnemyMonster) monster).getEnemyType() == EnemyMonster.BasicEnemies.TOAD)
         {
             image = new ImageIcon("images/toad.png");
         }
         
-        if(monster.getEnemyType() == EnemyMonster.BasicEnemies.CAT)
+        if(((EnemyMonster) monster).getEnemyType() == EnemyMonster.BasicEnemies.CAT)
         {
             image = new ImageIcon("images/cat.png");
         }
 
-        if(monster.getEnemyType() == EnemyMonster.BasicEnemies.ELEPHANT)
+        if(((EnemyMonster) monster).getEnemyType() == EnemyMonster.BasicEnemies.ELEPHANT)
         {
             image = new ImageIcon("images/elephant.png");
         }
 
-        if(monster.getEnemyType() == EnemyMonster.BasicEnemies.SNAIL)
+        if(((EnemyMonster) monster).getEnemyType() == EnemyMonster.BasicEnemies.SNAIL)
         {
             image = new ImageIcon("images/snail.png");
         }
 
-        if(monster.getEnemyType() == EnemyMonster.BasicEnemies.CROCODILE)
+        if(((EnemyMonster) monster).getEnemyType() == EnemyMonster.BasicEnemies.CROCODILE)
         {
             image = new ImageIcon("images/croc.png");
         }
 
-        if(monster.getEnemyType() == EnemyMonster.BasicEnemies.RHINO)
+        if(((EnemyMonster) monster).getEnemyType() == EnemyMonster.BasicEnemies.RHINO)
         {
             image = new ImageIcon("images/rhino.png");
+        }
+
+        if(((EnemyMonster) monster).getEnemyType() == EnemyMonster.BasicEnemies.GORILLA)
+        {
+            image = new ImageIcon("images/gorilla.png");
         }
 
 

@@ -17,6 +17,7 @@
 */
 import java.util.Random;
 import java.util.Vector;
+import java.util.Iterator;
 
 public abstract class Monster {
 
@@ -39,6 +40,8 @@ public abstract class Monster {
     private boolean alive; //true for alive, false for dead
 
     private Vector<Effect> effectsVector; //this vector holds all active effects for this monster
+
+    private 
 
     //setters for monster name and stats
     final void setName(String n) { name = n;}
@@ -179,13 +182,18 @@ public abstract class Monster {
 
         
         //go through all effects and if duration == 0, remove it from the vector
-        for(Effect e : effectsVector) 
+
+        Iterator<Effect> effectIterator = effectsVector.iterator(); //use an iterator to delete the effects
+
+        while(effectIterator.hasNext())
         {
+            Effect e = effectIterator.next();
             if(e.getDuration() == 0)
             {
-                effectsVector.remove(e);
+                effectIterator.remove();
             }
         }
+
         
     }
 
