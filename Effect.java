@@ -54,6 +54,7 @@ public class Effect {
         buffDefense,
         buffDodge,
         buffHeal,
+        buffCrit,
         BOSS_BUFF_DAMAGE,
         BOSS_BUFF_CRIT,
         BOSS_DEBUFF_DEFENSE,
@@ -98,70 +99,98 @@ public class Effect {
             {
             //no active component to this effect, only blocks the player from using this ability while under the effect
             
+            break;
+            
             }
             case ATTACK3_COOLDOWN:
             {
             //no active component to this effect, only blocks the player from using this ability while under the effect
+            
+            break;
 
             }
             case ATTACK4_COOLDOWN:
             {
             //no active component to this effect, only blocks the player from using this ability while under the effect
+            
+            break;
             }
 
             case debuffPercentageHealthLost: 
             {
               owner.setHealth((float) (owner.getHealth()-(owner.getMaxHealth()*.1))); //10% health per turn
+            
+              break;
             }
 
             case debuffDodge: 
             {
               owner.setDodge((int) (owner.getDodge()*.75)); //25% decrease to dodge
+              
+              break;
             }
 
             case debuffPoison: 
             {
               owner.setHealth((float) (owner.getHealth()-(10))); //-8 health per turn (medium duration)
+              
+              break;
             }
 
             case debuffBleed: 
             {
               owner.setHealth((float) (owner.getHealth()-(10))); //-4 health per turn (long duration)
+              
+              break;
             }
 
             case debuffBurn: 
             {
               owner.setHealth((float) (owner.getHealth()-(10))); //-12 health per turn(short duration)
+              
+              break;
             }
 
             case debuffStrongBurn: 
             {
               owner.setHealth((float) (owner.getHealth()-(10))); //-25 health per turn (short but deadly)
+              
+              break;
             }
 
             case debuffDefense: 
             {
               owner.setDefense((float) (owner.getDefense()*.75)); //% decrease to defense
+              
+              break;
             }
 
             case debuffDamage: 
             {
               owner.setDamage((float) (owner.getDamage()*.90)); //10% decrease to damage
+              
+              break;
             }
 
             case buffDamage: 
             {
               owner.setDamage((float) (owner.getDamage()*1.3));//30% increase to damage
+              
+              break;
             }
 
             case buffDefense: 
             {
               owner.setDefense((float) (owner.getDefense()* 1.15)); //15% increase to defense
+              
+              break;
             }
 
             case buffDodge: 
             {
               owner.setDodge((int) (owner.getDodge()*1.5)); //50% increase to dodge
+              
+              break;
             }
 
             case buffHeal: 
@@ -172,6 +201,9 @@ public class Effect {
               else {
                 owner.setHealth((float) (owner.getHealth()+(owner.getMaxHealth()*.25))); //25% health for 1 turn
               }
+
+              
+              break;
             }
 
             case debuffVenomBurst:
@@ -206,31 +238,48 @@ public class Effect {
               owner.setHealth(owner.getHealth() - baseDmg);
 
 
+              
+              break;
             }
 
             case BOSS_BUFF_CRIT:
             {
               owner.setCritChance((int) (owner.getCritChance() * 1.1)); //boss increases crit by 10%
+              
+              break;
             }
 
             case BOSS_DEBUFF_DEFENSE:
             {
               owner.setDefense((float)(owner.getDefense() * .5)); //decrease defense by 50%
+              
+              break;
             }
 
             case BOSS_DEBUFF_DODGE:
             {
               owner.setDodge((int) (owner.getDodge() * .5)); //decrease dodge by 50%
+              
+              break;
             }
 
             case BOSS_BUFF_DAMAGE:
             {
               owner.setDamage((float)(owner.getDamage() * 1.025)); //increase damage by 2.5%, lasts a bunch of turns
+              
+              break;
             }
             
             case BOSS_DEBUFF_BLEED:
             {
               owner.setHealth((float) (owner.getHealth() - 40.0)); //40 damage per tick
+              
+              break;
+            }
+
+            case buffCrit:
+            {
+              owner.setCritChance((int)(owner.getCritChance() * 1.05)); //5% crit chance increase
             }
 
             //keep adding cases as more effects are created

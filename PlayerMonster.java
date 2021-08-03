@@ -51,6 +51,7 @@ public class PlayerMonster extends Monster{
     public void levelUp()
     {
         //when a player monster levels up, their health is restored and boosted also
+        //they gain another attack
 
         this.setHealth((float)(this.getMaxHealth() * 1.25)); //cast the result to a float
         this.setMaxHealth(this.getHealth());
@@ -59,6 +60,10 @@ public class PlayerMonster extends Monster{
         this.setCritChance((int)(this.getCritChance() * 1.25));
         this.setDefense((float)(this.getDefense() * 1.25));
         this.setDodge((int)(this.getDodge() * 1.25));
+
+
+        this.setAttacks(this.getAttacks() < 4 ? (this.getAttacks() + 1) : (this.getAttacks()));
+        //if attacks is less than 4, add another, else remain at 4
 
     }
     
@@ -80,24 +85,34 @@ public class PlayerMonster extends Monster{
                 {
                   target.defend(self ,(float) (1.0*self.getDamage()));
                   target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffBurn, 1));
+
+                  break;
                 }
-                case 2: //Special: Polish Scales (Def+)
+                case 2: //Special: Scaly Menace (Def+, enemy Def-)
                 {
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK2_COOLDOWN, 2));
+                  target.getEffectsVector().add(new Effect(self, Effect.EffectType.debuffDefense, 3));
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.buffDefense, 3));
 
+                  break;
+
                 }
-                case 3: //Special: Stomp! (Enemy Def-)
+                case 3: //Special: Dragon's Rage! (Damage+, Crit+)
                 {
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK3_COOLDOWN, 4));
-                  target.getEffectsVector().add(new Effect(self, Effect.EffectType.debuffDefense, 4));
+                  self.getEffectsVector().add(new Effect(self, Effect.EffectType.buffDamage, 3));
+                  self.getEffectsVector().add(new Effect(self, Effect.EffectType.buffCrit, 3));
 
+
+                  break;
                 }
                 case 4: //Ultimate: Flames of Destruction (High DMG + Strong Burn)
                 {
                   target.defend(self ,(float) (1.5*self.getDamage()));
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK4_COOLDOWN, 6));
                   target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffStrongBurn, 2));
+                  
+                  break;
                 }
             }
 
@@ -114,6 +129,8 @@ public class PlayerMonster extends Monster{
                 {
                   target.defend(self ,(float) (0.5*self.getDamage()));
                   target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffBleed, 6));
+                  
+                  break;
 
                 }
                 case 2: //Special: Venomous Bite (Low DMG + Poison)
@@ -121,6 +138,8 @@ public class PlayerMonster extends Monster{
                   target.defend(self ,(float) (0.5*self.getDamage()));
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK2_COOLDOWN, 2));
                   target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffPoison, 3));
+                  
+                  break;
 
                 }
                 case 3: //Special: Sharp Fangs (Low DMG + Enemy Attack- + Attack+)
@@ -129,12 +148,16 @@ public class PlayerMonster extends Monster{
                 self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK3_COOLDOWN, 4));
                 target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffDamage, 2));
                 self.getEffectsVector().add(new Effect(self, Effect.EffectType.buffDamage, 3));
+                
+                break;
 
                 }
                 case 4: //Ultimate: Venom Burst! (No initial DMG, 2x Base Damage for each debuff on the Enemy)
                 {
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK4_COOLDOWN, 6));
                   target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffVenomBurst, 1));
+                  
+                  break;
                 }
             }
 
@@ -151,6 +174,8 @@ public class PlayerMonster extends Monster{
                 {
                   target.defend(self ,(float) (1.0*self.getDamage()));
                   target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffDefense, 1));
+                  
+                  break;
 
                 }
                 case 2: //Special: Howl (Low DMG + Enemy DMG-)
@@ -158,12 +183,16 @@ public class PlayerMonster extends Monster{
                   target.defend(self ,(float)  (0.5*self.getDamage()));
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK2_COOLDOWN, 2));
                   target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffDamage, 2));
+                  
+                  break;
 
                 }
                 case 3: //Special: Adrenaline (Heal 25% of health)
                 {
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK3_COOLDOWN, 4));
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.buffHeal, 1));
+                  
+                  break;
 
                 }
                 case 4: //Ultimate: Berserk (5x Damage + Armor Debuff) 
@@ -171,6 +200,8 @@ public class PlayerMonster extends Monster{
                   target.defend(self ,(float) (5.0*self.getDamage()));
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK4_COOLDOWN, 6));
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.debuffDefense, 3));
+                  
+                  break;
                 }
             }
         }

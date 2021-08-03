@@ -101,6 +101,7 @@ public class EnemyMonster extends Monster{
                 case 1: //Normal: Croak (low damage)
                 {
                   target.defend(self ,(float) (0.5*self.getDamage()));
+                  break;
                 }
                 case 2: //Special: Sudden Attack (50% chance to deal 1x damage, 25% to deal 0x, 20% to deal 1.5x, 5% to deal 3x)
                 {
@@ -121,6 +122,8 @@ public class EnemyMonster extends Monster{
                   if(rand >= 96 && rand <= 100) {
                     target.defend(self ,(float) (3.0*self.getDamage()));
                   }
+
+                  break;
                 }
 
             }
@@ -137,11 +140,13 @@ public class EnemyMonster extends Monster{
                 case 1: //Normal: Bite (Med DMG)
                 {
                   target.defend(self ,(float) (1.0*self.getDamage()));
+                  break;
                 }
                 case 2: //Special: Hide in Shadows (Dodge+)
                 {
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK2_COOLDOWN, 2));
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.buffDodge, 3));
+                  break;
                 }
 
             }
@@ -157,11 +162,13 @@ public class EnemyMonster extends Monster{
                 case 1: //Normal: Charge (Med DMG)
                 {
                   target.defend(self ,(float) (1.0*self.getDamage()));
+                  break;
                 }
                 case 2: //Special: Rampage! (Lower Enemy Def for 2 Turns)
                 {
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK2_COOLDOWN, 2));
                   target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffDefense, 2));
+                  break;
                 }
 
             }
@@ -177,11 +184,13 @@ public class EnemyMonster extends Monster{
                 case 1: //Normal: Fling Slime (Low DMG)
                 {
                   target.defend(self ,(float) (0.5*self.getDamage()));
+                  break;
                 }
                 case 2: //Special: Poison Spit (No DMG + Poison effect on Enemy)
                 {
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK2_COOLDOWN, 2));
                   target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffPoison, 4));
+                  break;
                 }
             }
         }
@@ -197,10 +206,12 @@ public class EnemyMonster extends Monster{
                 case 1:
                 {
 
+                  break;
                 }
                 case 2:
                 {
 
+                  break;
                 }
             }
         }
@@ -216,10 +227,12 @@ public class EnemyMonster extends Monster{
                 case 1:
                 {
 
+                  break;
                 }
                 case 2:
                 {
 
+                  break;
                 }
             }
         }

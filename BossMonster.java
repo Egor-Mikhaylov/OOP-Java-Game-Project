@@ -33,6 +33,8 @@ public class BossMonster extends EnemyMonster{
             {
                 target.defend(self ,(float) (1.5*self.getDamage()));
                 self.getEffectsVector().add(new Effect(self, Effect.EffectType.BOSS_BUFF_CRIT, 1)); //gorilla adds to its crit chance every use
+                
+                break;
             }
             case 2: //Special: Pummel (medium DMG + debuff def and dodge)
             {
@@ -40,18 +42,26 @@ public class BossMonster extends EnemyMonster{
                 target.getEffectsVector().add(new Effect(target, Effect.EffectType.BOSS_DEBUFF_DEFENSE, 1));
                 target.getEffectsVector().add(new Effect(target, Effect.EffectType.BOSS_DEBUFF_DODGE, 1));
                 self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK2_COOLDOWN, 4));
+                
+                break;
 
             }
             case 3: //Special: Rising Wrath! (long duration, short cooldown damage buff)
             {
                 self.getEffectsVector().add(new Effect(self, Effect.EffectType.BOSS_BUFF_DAMAGE, 5)); //lasts for 5 turns, insane scaling
                 self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK3_COOLDOWN, 1)); //basically NO COOLDOWN
+
+                
+                break;
             }
             case 4: //Ultimate: Primal Supremacy (Extreme DMG, inflicts long term strong bleed)
             {
               target.defend(self ,(float) (5.0*self.getDamage()));
               self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK4_COOLDOWN, 7));
               target.getEffectsVector().add(new Effect(target, Effect.EffectType.BOSS_DEBUFF_BLEED, 5));
+
+              
+              break;
             }
         }
     }

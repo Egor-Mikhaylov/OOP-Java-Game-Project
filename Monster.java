@@ -80,6 +80,8 @@ public abstract class Monster {
         dodge = dod;
         attacks = att;
 
+        effectsVector = new Vector<Effect>();
+
         effectsVector.clear();
 
         alive = true;
