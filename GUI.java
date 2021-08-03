@@ -65,6 +65,9 @@ public class GUI extends JFrame {
     private Monster player; //this will hold the player's monster
     private Monster enemy; //this will hold the enemy's monster, basic or boss type
 
+    private Monster playerBackup; //holds the player's monster stats from before a fight
+        //this replaces the player before a level up
+
     private final String spaces = "\n\n\n\t\t                 ";
 
 
@@ -265,6 +268,10 @@ public class GUI extends JFrame {
                     outputTextArea.setText(spaces); //reset output
 
 
+                    //create a backup of lvl 1 player, to preserve the initial stats 
+                    playerBackup = player;
+
+
                 }
 
                 else if(event.getSource() == inputButtons[1]) //second button pressed, Viper chosen
@@ -294,6 +301,11 @@ public class GUI extends JFrame {
                     updateAbilityButtons((PlayerMonster) player);
 
                     outputTextArea.setText(spaces); //reset output
+
+
+
+                    //create a backup of lvl 1 player, to preserve the initial stats 
+                    playerBackup = player;
                     
                 }
 
@@ -324,6 +336,11 @@ public class GUI extends JFrame {
                     updateAbilityButtons((PlayerMonster) player);
 
                     outputTextArea.setText(spaces); //reset output
+
+
+
+                    //create a backup of lvl 1 player, to preserve the initial stats 
+                    playerBackup = player;
                 }
 
 
@@ -334,6 +351,22 @@ public class GUI extends JFrame {
 
                 if(event.getSource() == inputButtons[0]) //first button pressed
                 {
+                    
+
+                    //basic ability used, player attacks first, update enemy HPBAR after attack
+
+                    //then the enemy chooses a random attack (1 or 2 for basic enemies) (1-4 for the boss), update player hpbar
+
+
+                    //afterwards cycle through effect vectors of player(update HPBar) then enemy (update HPbar)
+
+
+                    //then check if the player is dead, display popup and reset game to 3 choice phase
+
+                    //then check if enemy is dead, if basic enemy, restore player stats and level up
+                    //increase fightCounter, and spawn another enemy and update GUI
+
+                    //if boss is dead, player wins, display popup stating victory then rest the game to 3 choices
     
                 }
                 else if(event.getSource() == inputButtons[1]) //second button pressed
