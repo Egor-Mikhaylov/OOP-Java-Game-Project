@@ -83,8 +83,9 @@ public class EnemyMonster extends Monster{
                 case 2: //Special: Slash (Medium damage + bleed)
                 {
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK2_COOLDOWN, 2));
-                  target.defend(self ,(float) (1.0*self.getDamage()));
-                  target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffBleed, 6));
+                  if(!target.defend(self ,(float) (1.0*self.getDamage()))) {
+                    target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffBleed, 6));
+                  }
                 }
                 
             }
@@ -189,7 +190,9 @@ public class EnemyMonster extends Monster{
                 case 2: //Special: Poison Spit (No DMG + Poison effect on Enemy)
                 {
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK2_COOLDOWN, 2));
-                  target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffPoison, 4));
+                  if(!target.defend(self ,(float) (0.0*self.getDamage()))) {
+                    target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffPoison, 4));
+                  }
                   break;
                 }
             }
@@ -225,15 +228,16 @@ public class EnemyMonster extends Monster{
 
             switch(attackNumber) //the attack number is passed as a parameter
             {
-                case 1://normal Pierce (High DMG)
+                case 1: //normal Pierce (High DMG)
                 {
                   target.defend(self ,(float) (1.5*self.getDamage()));
                   break;
                 }
-                case 2:// special Gore (High DMG, bleed, dodge+)
+                case 2: //special Gore (High DMG, bleed, dodge+)
                 {
-                target.defend(self ,(float) (1.5*self.getDamage()));
-                target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffBleed, 3));
+                if(!target.defend(self ,(float) (1.5*self.getDamage()))) {
+                  target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffBleed, 3));
+                }
                 self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK2_COOLDOWN, 4));
                 self.getEffectsVector().add(new Effect(self, Effect.EffectType.buffDodge, 3));
                   break;
