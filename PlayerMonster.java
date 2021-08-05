@@ -33,7 +33,7 @@ public class PlayerMonster extends Monster{
         VIPER,
         MINOTAUR;
     }
-
+    //This method is used to display the monster choices
 
     private PlayerMonsterChoices monsterChoice; //monsterChoice is the monster chosen at the start of the game
 
