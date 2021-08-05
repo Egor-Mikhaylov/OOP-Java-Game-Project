@@ -35,10 +35,10 @@ public class GUI extends JFrame {
     //4 labels for button text, 2 for monster images - player monster and enemy monster, 2 for monster names in window
     // 1 panel for button grid, another panel for game window, which arrange everything but the 4 buttons
 
-    private JProgressBar playerHPBAR;
-    private JProgressBar enemyHPBAR;
+    private JProgressBar playerHPBAR; //Players health/progress bar
+    private JProgressBar enemyHPBAR; //Enemy health/progress bar
 
-    private JPanel gamePanel;
+    private JPanel gamePanel; 
 
     private JLabel playerMonsterName;
     private JLabel playerMonsterImage;
