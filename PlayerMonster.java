@@ -21,7 +21,7 @@
 *   Date First Created: 7-23-2021
 *
 *
-*   Editor: Egor Mikhaylov
+*   Editor: Egor Mikhaylov Jasmine Torres
 *
 */
 
