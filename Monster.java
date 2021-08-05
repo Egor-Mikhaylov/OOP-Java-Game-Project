@@ -190,7 +190,7 @@ public abstract class Monster {
             Effect e = effectIterator.next();
             if(e.getDuration() == 0)
             {
-                effectIterator.remove();
+                effectIterator.remove(); //removes effects
             }
         }
 
