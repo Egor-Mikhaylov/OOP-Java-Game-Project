@@ -25,22 +25,27 @@ public class BossMonster extends EnemyMonster{
 
     //the gorilla boss will have its own attacks here, 4 total
     @Override
-    public void attack(int attackNumber, Monster target, Monster self)
+    public boolean attack(int attackNumber, Monster target, Monster self)
     {
+        boolean hit = false;
         switch(attackNumber) //the attack number is passed as a parameter
         {
             case 1: //Normal: Monkey's Fist (High DMG + buff crit)
             {
-                target.defend(self ,(float) (1.5*self.getDamage()));
+                if(!target.defend(self ,(float) (1.5*self.getDamage()))) {
+                  hit = true;
+                }
                 self.getEffectsVector().add(new Effect(self, Effect.EffectType.BOSS_BUFF_CRIT, 1)); //gorilla adds to its crit chance every use
                 
                 break;
             }
             case 2: //Special: Pummel (medium DMG + debuff def and dodge)
             {
-                target.defend(self, (float)(1.0*self.getDamage()));
-                target.getEffectsVector().add(new Effect(target, Effect.EffectType.BOSS_DEBUFF_DEFENSE, 1));
-                target.getEffectsVector().add(new Effect(target, Effect.EffectType.BOSS_DEBUFF_DODGE, 1));
+                if(!target.defend(self, (float)(1.0*self.getDamage()))) {
+                  hit = true;
+                  target.getEffectsVector().add(new Effect(target, Effect.EffectType.BOSS_DEBUFF_DEFENSE, 1));
+                  target.getEffectsVector().add(new Effect(target, Effect.EffectType.BOSS_DEBUFF_DODGE, 1));
+                }
                 self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK2_COOLDOWN, 4));
                 
                 break;
@@ -56,14 +61,17 @@ public class BossMonster extends EnemyMonster{
             }
             case 4: //Ultimate: Primal Supremacy (Extreme DMG, inflicts long term strong bleed)
             {
-              target.defend(self ,(float) (3.0*self.getDamage()));
+              if(!target.defend(self ,(float) (3.0*self.getDamage()))) {
+                target.getEffectsVector().add(new Effect(target, Effect.EffectType.BOSS_DEBUFF_BLEED, 5));
+                hit = true;
+              }
               self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK4_COOLDOWN, 7));
-              target.getEffectsVector().add(new Effect(target, Effect.EffectType.BOSS_DEBUFF_BLEED, 5));
 
               
               break;
             }
         }
+      return hit;
     }
 
 }

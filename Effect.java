@@ -89,72 +89,90 @@ public class Effect {
     public EffectType getThisEffect() {return thisEffect;}
 
 
-    public void applyEffect()
+    public String applyEffect()
     {
         duration--; //the duration will always be at least 1
+        String outputEffectsText = "";
 
         switch(thisEffect)
         {
             case ATTACK2_COOLDOWN:
             {
-            //no active component to this effect, only blocks the player from using this ability while under the effect
-            
-            break;
+              //no active component to this effect, only blocks the player from using this ability while under the effect
+              if(duration != 0) 
+              {
+                outputEffectsText += "Your first special is still under cooldown. \n";
+              }
+              else {
+                outputEffectsText += "Your first special is no longer under cooldown. \n";
+              }
+              break;
             
             }
             case ATTACK3_COOLDOWN:
             {
-            //no active component to this effect, only blocks the player from using this ability while under the effect
-            
-            break;
+              //no active component to this effect, only blocks the player from using this ability while under the effect
+              if(duration != 0) 
+              {
+                outputEffectsText += "Your second special is still under cooldown. \n";
+              }
+              else {
+                outputEffectsText += "Your second special is no longer under cooldown. \n";
+              }
+              break;
 
             }
             case ATTACK4_COOLDOWN:
             {
-            //no active component to this effect, only blocks the player from using this ability while under the effect
-            
-            break;
+              //no active component to this effect, only blocks the player from using this ability while under the effect
+              if(duration != 0) 
+              {
+                outputEffectsText += "Your ultimate is still under cooldown. \n";
+              }
+              else {
+                outputEffectsText += "Your ultimate is no longer under cooldown. \n";
+              }
+              break;
             }
 
             case debuffPercentageHealthLost: 
             {
               owner.setHealth((float) (owner.getHealth()-(owner.getMaxHealth()*.1))); //10% health per turn
-            
+              //unused at the moment
               break;
             }
 
             case debuffDodge: 
             {
               owner.setDodge((int) (owner.getDodge()*.75)); //25% decrease to dodge
-              
               break;
             }
 
             case debuffPoison: 
             {
-              owner.setHealth((float) (owner.getHealth()-(10))); //-8 health per turn (medium duration)
-              
+              owner.setHealth((float) (owner.getHealth()-(8))); //-8 health per turn (medium duration)
+              outputEffectsText += "You have taken 8 damage from poison. \n";
               break;
             }
 
             case debuffBleed: 
             {
-              owner.setHealth((float) (owner.getHealth()-(10))); //-4 health per turn (long duration)
-              
+              owner.setHealth((float) (owner.getHealth()-(4))); //-4 health per turn (long duration)
+              outputEffectsText += "You have taken 4 damage from your bleeding. \n";
               break;
             }
 
             case debuffBurn: 
             {
-              owner.setHealth((float) (owner.getHealth()-(10))); //-12 health per turn(short duration)
-              
+              owner.setHealth((float) (owner.getHealth()-(12))); //-12 health per turn(short duration)
+              outputEffectsText += "You have taken 12 damage from burning. \n";
               break;
             }
 
             case debuffStrongBurn: 
             {
-              owner.setHealth((float) (owner.getHealth()-(10))); //-25 health per turn (short but deadly)
-              
+              owner.setHealth((float) (owner.getHealth()-(25))); //-25 health per turn (short but deadly)
+              outputEffectsText += "You have taken 25 damage from your Strong Burn. \n";
               break;
             }
 
@@ -237,7 +255,6 @@ public class Effect {
 
               owner.setHealth(owner.getHealth() - baseDmg);
 
-
               
               break;
             }
@@ -252,7 +269,6 @@ public class Effect {
             case BOSS_DEBUFF_DEFENSE:
             {
               owner.setDefense((float)(owner.getDefense() * .5)); //decrease defense by 50%
-              
               break;
             }
 
@@ -273,7 +289,7 @@ public class Effect {
             case BOSS_DEBUFF_BLEED:
             {
               owner.setHealth((float) (owner.getHealth() - 40.0)); //40 damage per tick
-              
+              outputEffectsText += "You have taken 40 damage from the boss's bleed. \n";
               break;
             }
 
@@ -284,7 +300,7 @@ public class Effect {
 
             //keep adding cases as more effects are created
         }
-
+      return outputEffectsText;
 
     }
     

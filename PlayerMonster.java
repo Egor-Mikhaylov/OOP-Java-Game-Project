@@ -68,12 +68,14 @@ public class PlayerMonster extends Monster{
     }
     
     @Override
-    public void attack(int attackNumber, Monster target, Monster self)
+    public boolean attack(int attackNumber, Monster target, Monster self)
     {
         //the integer passed to this method is the attack, 1-4, that the player wants to do
         //when an attack button is pressed, whatever number that button is passed here
 
         //the target is the monster that will defend against the attack...
+
+        boolean hit = false;
 
         if(monsterChoice == PlayerMonsterChoices.DRAGON)
         {
@@ -85,6 +87,7 @@ public class PlayerMonster extends Monster{
                 {
                   if(!target.defend(self ,(float) (1.0*self.getDamage()))) {
                     target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffBurn, 2));
+                    hit = true;
                   }
 
                   break;
@@ -94,6 +97,7 @@ public class PlayerMonster extends Monster{
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK2_COOLDOWN, 2));
                   target.getEffectsVector().add(new Effect(self, Effect.EffectType.debuffDefense, 3));
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.buffDefense, 3));
+                  hit = true;
 
                   break;
 
@@ -103,6 +107,7 @@ public class PlayerMonster extends Monster{
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK3_COOLDOWN, 4));
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.buffDamage, 3));
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.buffCrit, 3));
+                  hit = true;
 
 
                   break;
@@ -111,6 +116,7 @@ public class PlayerMonster extends Monster{
                 {
                   if(!target.defend(self ,(float) (1.5*self.getDamage()))) {
                     target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffStrongBurn, 2));
+                    hit = true;
                   }
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK4_COOLDOWN, 6));
                   
@@ -131,6 +137,7 @@ public class PlayerMonster extends Monster{
                 {
                   if(!target.defend(self ,(float) (0.5*self.getDamage()))) {
                     target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffBleed, 6));
+                    hit = true;
                   }
                   
                   break;
@@ -140,6 +147,7 @@ public class PlayerMonster extends Monster{
                 {
                   if(!target.defend(self ,(float) (0.5*self.getDamage()))) {
                     target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffPoison, 3));
+                    hit = true;
                   }
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK2_COOLDOWN, 2));
                   
@@ -150,6 +158,7 @@ public class PlayerMonster extends Monster{
                 {
                 if(!target.defend(self ,(float) (0.5*self.getDamage()))) {
                   target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffDamage, 2));
+                  hit = true;
                 }
                 self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK3_COOLDOWN, 4));
                 self.getEffectsVector().add(new Effect(self, Effect.EffectType.buffDamage, 3));
@@ -161,6 +170,7 @@ public class PlayerMonster extends Monster{
                 {
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK4_COOLDOWN, 6));
                   target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffVenomBurst, 1));
+                  hit = true;
                   
                   break;
                 }
@@ -179,6 +189,7 @@ public class PlayerMonster extends Monster{
                 {
                   if(!target.defend(self ,(float) (1.0*self.getDamage()))) {
                     target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffDefense, 2));
+                    hit = true;
                   }
                   
                   break;
@@ -188,6 +199,7 @@ public class PlayerMonster extends Monster{
                 {
                   if(!target.defend(self ,(float)  (0.5*self.getDamage()))) {
                     target.getEffectsVector().add(new Effect(target, Effect.EffectType.debuffDamage, 2));
+                    hit = true;
                   }
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK2_COOLDOWN, 2));
                   
@@ -198,15 +210,19 @@ public class PlayerMonster extends Monster{
                 {
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK3_COOLDOWN, 4));
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.buffHeal, 2));
+                  hit = true;
                   
                   break;
 
                 }
                 case 4: //Ultimate: Berserk (3x Damage + Armor Debuff) 
                 {
-                  target.defend(self ,(float) (3.0*self.getDamage()));
+                  if(!target.defend(self ,(float) (3.0*self.getDamage()))) {
+                    self.getEffectsVector().add(new Effect(self, Effect.EffectType.debuffDefense, 3));
+                    hit = true;
+                  }
                   self.getEffectsVector().add(new Effect(self, Effect.EffectType.ATTACK4_COOLDOWN, 6));
-                  self.getEffectsVector().add(new Effect(self, Effect.EffectType.debuffDefense, 3));
+                  
                   
                   break;
                 }
@@ -214,6 +230,6 @@ public class PlayerMonster extends Monster{
         }
 
         
-        
+        return hit;
     }
 }

@@ -92,7 +92,7 @@ public abstract class Monster {
 
 
 
-    public abstract void attack(int attackNumber, Monster target, Monster self); //a monster overrides this function for their attacks
+    public abstract boolean attack(int attackNumber, Monster target, Monster self); //a monster overrides this function for their attacks
 
 
 
@@ -166,13 +166,14 @@ public abstract class Monster {
 
 
     //only call this method at the end of a turn, and only call this once per monster in a fight
-    public void applyEffects()
+    public String applyEffects()
     {
         //go through all effect on this monster and apply them
+        String effectsOutput = "";
         
         for(Effect e : effectsVector) 
         {
-            e.applyEffect();
+            effectsOutput += e.applyEffect();
         }
 
 
@@ -194,7 +195,7 @@ public abstract class Monster {
             }
         }
 
-        
+        return effectsOutput;
     }
 
 
