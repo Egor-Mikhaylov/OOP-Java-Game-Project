@@ -25,6 +25,8 @@
 *
 */
 
+import javax.swing.JTextArea;
+
 public class PlayerMonster extends Monster{
 
     public enum PlayerMonsterChoices 
@@ -37,9 +39,9 @@ public class PlayerMonster extends Monster{
 
     private PlayerMonsterChoices monsterChoice; //monsterChoice is the monster chosen at the start of the game
 
-    public PlayerMonster(String n, float h, float dam, int crit, float def, int dod, int att, PlayerMonsterChoices choice)
+    public PlayerMonster(String n, float h, float dam, int crit, float def, int dod, int att, PlayerMonsterChoices choice, JTextArea ta)
     {
-        super(n, h, dam, crit, def, dod, att);
+        super(n, h, dam, crit, def, dod, att, ta);
         monsterChoice = choice;
     }
 

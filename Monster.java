@@ -18,6 +18,7 @@
 import java.util.Random;
 import java.util.Vector;
 import java.util.Iterator;
+import javax.swing.JTextArea;
 
 public abstract class Monster {
 
@@ -41,8 +42,7 @@ public abstract class Monster {
 
     private Vector<Effect> effectsVector; //this vector holds all active effects for this monster
 
-    private 
-
+    private JTextArea textArea; //all actions will be output here
     //setters for monster name and stats
     final void setName(String n) { name = n;}
     final void setHealth(float h) {health = h;}
@@ -71,9 +71,11 @@ public abstract class Monster {
 
     final Vector<Effect> getEffectsVector(){return effectsVector;}
 
+    final JTextArea getTextArea(){return textArea;}
+
 
     //Monster superclass constructor
-    public Monster(String n, float h, float dam, int crit, float def, int dod, int att){
+    public Monster(String n, float h, float dam, int crit, float def, int dod, int att, JTextArea ta){
         name = n;
         health = h;
         maxHealth = h;
@@ -82,6 +84,8 @@ public abstract class Monster {
         defense = def;
         dodge = dod;
         attacks = att;
+
+        textArea = ta;
 
         effectsVector = new Vector<Effect>();
 
@@ -166,36 +170,59 @@ public abstract class Monster {
 
 
     //only call this method at the end of a turn, and only call this once per monster in a fight
-    public String applyEffects()
+    public void applyEffects()
     {
+
+        Iterator<Effect> effectIterator = effectsVector.iterator(); //iterator for start of vector
         //go through all effect on this monster and apply them
-        String effectsOutput = "";
+        //String effectsOutput = "";
         
+
+        /*
         for(Effect e : effectsVector) 
         {
             effectsOutput += e.applyEffect();
         }
 
+        */
+  
 
         //       use this to add a new effect to the effectVector vector
-
         //effectsVector.add(new Effect(Effect.EffectType.ATTACK2_COOLDOWN, 2));
-
-        
         //go through all effects and if duration == 0, remove it from the vector
+        Vector<Effect> effectsToRemove = new Vector<Effect>();
 
-        Iterator<Effect> effectIterator = effectsVector.iterator(); //use an iterator to delete the effects
 
-        while(effectIterator.hasNext())
-        {
-            Effect e = effectIterator.next();
-            if(e.getDuration() == 0)
+            while(effectIterator.hasNext())
             {
-                effectIterator.remove(); //removes effects
+             Effect e = effectIterator.next();
+             e.applyEffect();
             }
-        }
+    
+            effectIterator = effectsVector.iterator();
+    
+            while(effectIterator.hasNext())
+            {
+    
+                Effect e = effectIterator.next();
+    
+                if(e.getDuration() == 0)
+                {
+                    effectsToRemove.add(e); //add to vector to remove later
+                }
+    
+            }
+    
+    
+            effectsVector.removeAll(effectsToRemove); //remove all effects where duration == 0
+    
+            effectsToRemove = null;
+    
+    
+      
 
-        return effectsOutput;
+
+       // return effectsOutput;
     }
 
 

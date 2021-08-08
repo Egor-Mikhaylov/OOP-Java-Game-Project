@@ -89,7 +89,7 @@ public class Effect {
     public EffectType getThisEffect() {return thisEffect;}
 
 
-    public String applyEffect()
+    public void applyEffect()
     {
         duration--; //the duration will always be at least 1
         String outputEffectsText = "";
@@ -296,11 +296,14 @@ public class Effect {
             case buffCrit:
             {
               owner.setCritChance((int)(owner.getCritChance() * 1.05)); //5% crit chance increase
+              break;
             }
 
             //keep adding cases as more effects are created
         }
-      return outputEffectsText;
+      
+        if(owner.getName() == "Dragon" || owner.getName() == "Viper" || owner.getName() == "Minotaur" )
+        owner.getTextArea().append(outputEffectsText);
 
     }
     

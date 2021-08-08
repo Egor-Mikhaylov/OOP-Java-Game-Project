@@ -15,12 +15,13 @@
 *   Editor: Egor Mikhaylov
 *
 */
+import javax.swing.JTextArea;
 
 public class BossMonster extends EnemyMonster{
     
-    public BossMonster(String n, float h, float dam, int crit, float def, int dod, int att)
+    public BossMonster(String n, float h, float dam, int crit, float def, int dod, int att, JTextArea ta)
     {
-        super(n, h, dam, crit, def, dod, att, BasicEnemies.GORILLA); //a boss has 4 attacks
+        super(n, h, dam, crit, def, dod, att, BasicEnemies.GORILLA, ta); //a boss has 4 attacks
     }
 
     //the gorilla boss will have its own attacks here, 4 total

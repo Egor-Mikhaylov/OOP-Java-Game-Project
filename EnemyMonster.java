@@ -18,6 +18,7 @@
 */
 
 import java.util.Random;
+import javax.swing.JTextArea;
 
 public class EnemyMonster extends Monster{
     
@@ -43,9 +44,9 @@ public class EnemyMonster extends Monster{
 
     private BasicEnemies enemyType;
 
-    public EnemyMonster(String n, float h, float dam, int crit, float def, int dod, int att, BasicEnemies t)
+    public EnemyMonster(String n, float h, float dam, int crit, float def, int dod, int att, BasicEnemies t, JTextArea ta)
     {
-        super(n, h, dam, crit, def, dod, att); // don't need choice, a basic monster has 2 attacks
+        super(n, h, dam, crit, def, dod, att, ta); // don't need choice, a basic monster has 2 attacks
         enemyType = t;
     }
 
@@ -79,7 +80,7 @@ public class EnemyMonster extends Monster{
             {
                 case 1: //Normal: Sting (high damage)
                 {
-                  if(!target.defend(self ,(float) (1.5*self.getDamage()))) {
+                  if(!target.defend(self ,(float) (1.25*self.getDamage()))) {
                     hit = true;
                   }
                   //"self" is the enemy that is attacking, the attacker

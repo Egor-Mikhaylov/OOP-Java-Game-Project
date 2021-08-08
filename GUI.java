@@ -29,6 +29,8 @@ import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
+import java.util.Iterator;
+
 public class GUI extends JFrame {
 
     //need 2 progress bars, 4 buttons, 8 labels, 2 panels
@@ -248,7 +250,7 @@ public class GUI extends JFrame {
                 if(event.getSource() == inputButtons[0]) //first button pressed, Dragon chosen
                 {
                     //create a new player monster
-                    player = new PlayerMonster("Dragon",750,100,10,45,12,4, PlayerMonster.PlayerMonsterChoices.DRAGON);
+                    player = new PlayerMonster("Dragon",750,100,10,45,12,4, PlayerMonster.PlayerMonsterChoices.DRAGON, outputTextArea);
                     playerIsChoosingAMonster = false;
 
                     changeGameToFighting(); //change GUI format
@@ -282,7 +284,7 @@ public class GUI extends JFrame {
 
                 else if(event.getSource() == inputButtons[1]) //second button pressed, Viper chosen
                 {
-                    player = new PlayerMonster("Viper",500,75,20,40,20,4, PlayerMonster.PlayerMonsterChoices.VIPER);
+                    player = new PlayerMonster("Viper",500,75,20,40,20,4, PlayerMonster.PlayerMonsterChoices.VIPER, outputTextArea);
                     playerIsChoosingAMonster = false;
 
                     
@@ -317,7 +319,7 @@ public class GUI extends JFrame {
 
                 else if(event.getSource() == inputButtons[2]) //third button pressed, Minotaur chosen
                 {
-                    player = new PlayerMonster("Minotaur",900,125,15,10,8,4, PlayerMonster.PlayerMonsterChoices.MINOTAUR);
+                    player = new PlayerMonster("Minotaur",900,125,15,10,8,4, PlayerMonster.PlayerMonsterChoices.MINOTAUR, outputTextArea);
                     playerIsChoosingAMonster = false;
 
                     
@@ -418,12 +420,16 @@ public class GUI extends JFrame {
                         //attack is available, check if on cooldown
                         boolean cooldown = false;
 
-                        for(Effect e : player.getEffectsVector())
+                        Iterator<Effect> effectIterator = player.getEffectsVector().iterator(); //iterator for start of vector
+
+
+                        while(effectIterator.hasNext())
                         {
-                            if(e.getThisEffect() == Effect.EffectType.ATTACK2_COOLDOWN)
-                            {
-                                cooldown = true;//cooldown found
-                            }
+                          Effect e = effectIterator.next();
+                          if(e.getThisEffect() == Effect.EffectType.ATTACK2_COOLDOWN)
+                          {
+                              cooldown = true;//cooldown found
+                          }
                         }
 
                         if(cooldown == false)
@@ -481,12 +487,16 @@ public class GUI extends JFrame {
                         //attack is available, check if on cooldown
                         boolean cooldown = false;
 
-                        for(Effect e : player.getEffectsVector())
+                        Iterator<Effect> effectIterator = player.getEffectsVector().iterator(); //iterator for start of vector
+
+
+                        while(effectIterator.hasNext())
                         {
-                            if(e.getThisEffect() == Effect.EffectType.ATTACK3_COOLDOWN)
-                            {
-                                cooldown = true;//cooldown found
-                            }
+                          Effect e = effectIterator.next();
+                          if(e.getThisEffect() == Effect.EffectType.ATTACK3_COOLDOWN)
+                          {
+                              cooldown = true;//cooldown found
+                          }
                         }
 
                         if(cooldown == false)
@@ -515,7 +525,7 @@ public class GUI extends JFrame {
                             }
                             else if(player.getName().equals("Minotaur"))
                             {
-                              outputTextArea.append("You have healed yourself by 25%.\n");
+                              outputTextArea.append("You have healed yourself.\n");
                               outputTextArea.append("Your second special is now on a 4 turn cooldown.\n");
                             }
                         }
@@ -535,12 +545,16 @@ public class GUI extends JFrame {
                         //attack is available, check if on cooldown
                         boolean cooldown = false;
 
-                        for(Effect e : player.getEffectsVector())
+                        Iterator<Effect> effectIterator = player.getEffectsVector().iterator(); //iterator for start of vector
+
+
+                        while(effectIterator.hasNext())
                         {
-                            if(e.getThisEffect() == Effect.EffectType.ATTACK4_COOLDOWN)
-                            {
-                                cooldown = true;//cooldown found
-                            }
+                          Effect e = effectIterator.next();
+                          if(e.getThisEffect() == Effect.EffectType.ATTACK4_COOLDOWN)
+                          {
+                              cooldown = true;//cooldown found
+                          }
                         }
 
                         if(cooldown == false)
@@ -609,62 +623,88 @@ public class GUI extends JFrame {
                     if(randomNumber == 4)
                     {
                         //check if the boss can use this attack, if not, use a normal attack
-                        
-                        for(Effect e : enemy.getEffectsVector())
+
+                        Iterator<Effect> effectIterator = enemy.getEffectsVector().iterator(); //iterator for start of vector
+
+
+                        while(effectIterator.hasNext())
                         {
-                            if(e.getThisEffect() == Effect.EffectType.ATTACK4_COOLDOWN)
-                            {
-                                randomNumber = 1;// if this attack is on cooldown, use a normal
-                            }
-                            else {
-                              prevHealth = player.getHealth();
-                              attackWorked = enemy.attack(randomNumber, player, enemy); 
-                              //boss uses their 4th attack on the player
-                              dmgDone = prevHealth-player.getHealth();
-                              if(attackWorked) {
-                                outputTextArea.append(String.format("The boss has hit you with its ultimate attack for %.2f damage!\n", dmgDone));
-                                outputTextArea.append("The boss has applied a strong bleed on you for 7 turns.\n");
-                              }
-                              else 
-                              {
-                                outputTextArea.append("The boss has missed its ultimate attack.\n");
-                              }
-                            }
+                          Effect e = effectIterator.next();
+                          if(e.getThisEffect() == Effect.EffectType.ATTACK4_COOLDOWN)
+                          {
+                            randomNumber = 1;// if this attack is on cooldown, use a normal
+                          }
+                          
                         }
+
+
+                        prevHealth = player.getHealth();
+                        attackWorked = enemy.attack(randomNumber, player, enemy); 
+                        //boss uses their 4th attack on the player
+                        dmgDone = prevHealth-player.getHealth();
+                        if(attackWorked) {
+                          outputTextArea.append(String.format("The boss has hit you with its ultimate attack for %.2f damage!\n", dmgDone));
+                          outputTextArea.append("The boss has applied a strong bleed on you for 7 turns.\n");
+                        }
+                        else 
+                        {
+                          outputTextArea.append("The boss has missed its ultimate attack.\n");
+                        }
+                        
                     }
 
                     if(randomNumber == 3)
                     {
                         //check if the boss can use this attack, if not, use a normal attack
                         
-                        for(Effect e : enemy.getEffectsVector())
+
+                      
+                        Iterator<Effect> effectIterator = enemy.getEffectsVector().iterator(); //iterator for start of vector
+
+
+                        while(effectIterator.hasNext())
                         {
-                            if(e.getThisEffect() == Effect.EffectType.ATTACK3_COOLDOWN)
-                            {
-                                randomNumber = 1;// if this attack is on cooldown, use a normal
-                            }
-                            else {
-                              prevHealth = player.getHealth();
-                              attackWorked = enemy.attack(randomNumber, player, enemy); 
-                              //boss uses their 3rd attack on the player
-                              dmgDone = prevHealth-player.getHealth();
-                              outputTextArea.append("The boss has buffed its damage for 5 turns with its second special.\n");
-                            }
+                          Effect e = effectIterator.next();
+                          if(e.getThisEffect() == Effect.EffectType.ATTACK3_COOLDOWN)
+                          {
+                            randomNumber = 1;// if this attack is on cooldown, use a normal
+                          }
+                          
                         }
+
+
+
+
+                      prevHealth = player.getHealth();
+                      attackWorked = enemy.attack(randomNumber, player, enemy); 
+                      //boss uses their 3rd attack on the player
+                      dmgDone = prevHealth-player.getHealth();
+                      outputTextArea.append("The boss has buffed its damage for 5 turns with its second special.\n");
+                            
+                        
                     }
 
                     if(randomNumber == 2)
                     {
                         //check if the enemy can use this attack, if not, use a normal attack
                         
-                        for(Effect e : enemy.getEffectsVector())
+                      
+                        Iterator<Effect> effectIterator = enemy.getEffectsVector().iterator(); //iterator for start of vector
+
+
+                        while(effectIterator.hasNext())
                         {
-                            if(e.getThisEffect() == Effect.EffectType.ATTACK2_COOLDOWN)
-                            {
-                                randomNumber = 1;// if this attack is on cooldown, use a normal
-                            }
-                            else 
-                            {
+                          Effect e = effectIterator.next();
+                          if(e.getThisEffect() == Effect.EffectType.ATTACK2_COOLDOWN)
+                          {
+                            randomNumber = 1;// if this attack is on cooldown, use a normal
+                          }
+                          
+                        }
+
+
+
+
                               prevHealth = player.getHealth();
                               attackWorked = enemy.attack(randomNumber, player, enemy); 
                               //enemy uses their 2nd attack on the player
@@ -685,7 +725,7 @@ public class GUI extends JFrame {
                               if(((EnemyMonster) enemy).getEnemyType() == EnemyMonster.BasicEnemies.WASP)
                               {
                                 if(attackWorked) {
-                                  outputTextArea.append(String.format("The enemy has hit you with its special attack for %.2f damage!", dmgDone));
+                                  outputTextArea.append(String.format("The enemy has hit you with its special attack for %.2f damage!\n", dmgDone));
                                   outputTextArea.append("The enemy has applied a bleed on you for 6 turns.\n");
                                 }
                                 else {
@@ -734,8 +774,13 @@ public class GUI extends JFrame {
                                 }
                               }
 
-                            }
-                        }
+                            
+                        
+
+
+
+
+
                     }
 
                     if(randomNumber == 1)
@@ -771,9 +816,9 @@ public class GUI extends JFrame {
 
 
                     //afterewards cycle through effect vectors of player(update HPBar) then enemy (update HPbar)
-                    String effectOutput = "";
-                    effectOutput = player.applyEffects();
-                    outputTextArea.append(effectOutput);
+                    //String effectOutput = "";
+                    player.applyEffects();
+                    //outputTextArea.append(effectOutput);
                     
                     playerHPBAR.setValue((int) ((player.getHealth() / player.getMaxHealth()) * 100)); //update player HPBar
 
@@ -783,6 +828,14 @@ public class GUI extends JFrame {
 
 
 
+                    if(player.getHealth() <= 2)
+                    {
+                      player.setAlive(false);
+                    }
+                    if(enemy.getHealth() <= 2)
+                    {
+                      enemy.setAlive(false);
+                    }
 
                     //then check if the player is dead, display popup and reset game to 3 choice phase
                     if(player.getAlive() == false)
@@ -855,6 +908,8 @@ public class GUI extends JFrame {
 
                             //update ability buttons
                             updateAbilityButtons(((PlayerMonster)player));
+
+                            outputTextArea.setText( " ");
 
 
                         }
@@ -952,7 +1007,7 @@ public class GUI extends JFrame {
         randomNumber = 0;
 
         Monster createdEnemy = new EnemyMonster("Wasp", 300 * statMult, 100 * statMult, (int) (30 * statMult),10 * statMult, (int)(25 * statMult),
-                                                 2, EnemyMonster.BasicEnemies.WASP);
+                                                 2, EnemyMonster.BasicEnemies.WASP, outputTextArea);
 
 
 
@@ -990,38 +1045,38 @@ public class GUI extends JFrame {
 
             if( randomNumber < 10) //wasp
             {
-                createdEnemy = new EnemyMonster("Wasp", 300 * statMult, 100 * statMult, (int) (30 * statMult),10 * statMult, (int)(25 * statMult),
-                                                2, EnemyMonster.BasicEnemies.WASP);
+                createdEnemy = new EnemyMonster("Wasp", 300 * statMult, 80 * statMult, (int) (30 * statMult),10 * statMult, (int)(25 * statMult),
+                                                2, EnemyMonster.BasicEnemies.WASP, outputTextArea);
             }
             else if( randomNumber >= 10 && randomNumber < 20) //toad
             {
                 createdEnemy = new EnemyMonster("Toad", 450 * statMult, 45 * statMult, (int) (30 * statMult),20 * statMult, (int)(10 * statMult),
-                                                2, EnemyMonster.BasicEnemies.TOAD);
+                                                2, EnemyMonster.BasicEnemies.TOAD, outputTextArea);
             }
             else if( randomNumber >= 20 && randomNumber < 30) //cat
             {
-                createdEnemy = new EnemyMonster("Cat", 450 * statMult, 75 * statMult, (int) (25 * statMult),17 * statMult, (int)(10 * statMult),
-                                                2, EnemyMonster.BasicEnemies.CAT);
+                createdEnemy = new EnemyMonster("Cat", 450 * statMult, 75 * statMult, (int) (25 * statMult),17 * statMult, (int)(3 * statMult),
+                                                2, EnemyMonster.BasicEnemies.CAT, outputTextArea);
             }
             else if( randomNumber >= 30 && randomNumber < 40) //elephant
             {
                 createdEnemy = new EnemyMonster("Elephant", 1000 * statMult, 90 * statMult, (int) (5 * statMult),35 * statMult, (int)(5 * statMult),
-                                                2, EnemyMonster.BasicEnemies.ELEPHANT);
+                                                2, EnemyMonster.BasicEnemies.ELEPHANT, outputTextArea);
             }
             else if( randomNumber >= 40 && randomNumber < 50) //snail
             {
                 createdEnemy = new EnemyMonster("Snail", 300 * statMult, 45 * statMult, (int) (20 * statMult),45 * statMult, (int)(5 * statMult),
-                                                 2, EnemyMonster.BasicEnemies.SNAIL);
+                                                 2, EnemyMonster.BasicEnemies.SNAIL, outputTextArea);
             }
             else if( randomNumber >= 50 && randomNumber < 60) //crocodile
             {
-                createdEnemy = new EnemyMonster("Crocodile", 600 * statMult, 85 * statMult, (int) (20 * statMult), 20 * statMult, (int)(10 * statMult),
-                                                2, EnemyMonster.BasicEnemies.CROCODILE);
+                createdEnemy = new EnemyMonster("Crocodile", 600 * statMult, 65 * statMult, (int) (20 * statMult), 20 * statMult, (int)(10 * statMult),
+                                                2, EnemyMonster.BasicEnemies.CROCODILE, outputTextArea);
             }
             else if( randomNumber >= 60 && randomNumber < 70) //rhino
             {
-                createdEnemy = new EnemyMonster("Rhino", 800 * statMult, 90 * statMult, (int) (5 * statMult),7 * statMult, (int)(5 * statMult),
-                                                2, EnemyMonster.BasicEnemies.RHINO);
+                createdEnemy = new EnemyMonster("Rhino", 800 * statMult, 80 * statMult, (int) (5 * statMult),7 * statMult, (int)(5 * statMult),
+                                                2, EnemyMonster.BasicEnemies.RHINO, outputTextArea);
             }
 
 
@@ -1031,7 +1086,7 @@ public class GUI extends JFrame {
 
         if(fightNum == 5) //gorilla boss fight
         {
-            createdEnemy = new BossMonster("Gorilla", 3000, 175, 3, 45, 5, 4);
+            createdEnemy = new BossMonster("Gorilla", 3000, 175, 3, 45, 5, 4, outputTextArea);
         }
 
 
