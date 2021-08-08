@@ -250,7 +250,7 @@ public class GUI extends JFrame {
                 if(event.getSource() == inputButtons[0]) //first button pressed, Dragon chosen
                 {
                     //create a new player monster
-                    player = new PlayerMonster("Dragon",750,100,10,45,12,4, PlayerMonster.PlayerMonsterChoices.DRAGON, outputTextArea);
+                    player = new PlayerMonster("Dragon",900,100,10,45,12,4, PlayerMonster.PlayerMonsterChoices.DRAGON, outputTextArea);
                     playerIsChoosingAMonster = false;
 
                     changeGameToFighting(); //change GUI format
@@ -284,7 +284,7 @@ public class GUI extends JFrame {
 
                 else if(event.getSource() == inputButtons[1]) //second button pressed, Viper chosen
                 {
-                    player = new PlayerMonster("Viper",500,75,20,40,20,4, PlayerMonster.PlayerMonsterChoices.VIPER, outputTextArea);
+                    player = new PlayerMonster("Viper",750,75,20,60,20,4, PlayerMonster.PlayerMonsterChoices.VIPER, outputTextArea);
                     playerIsChoosingAMonster = false;
 
                     
@@ -319,7 +319,7 @@ public class GUI extends JFrame {
 
                 else if(event.getSource() == inputButtons[2]) //third button pressed, Minotaur chosen
                 {
-                    player = new PlayerMonster("Minotaur",900,125,15,10,8,4, PlayerMonster.PlayerMonsterChoices.MINOTAUR, outputTextArea);
+                    player = new PlayerMonster("Minotaur",1000,125,15,10,8,4, PlayerMonster.PlayerMonsterChoices.MINOTAUR, outputTextArea);
                     playerIsChoosingAMonster = false;
 
                     
@@ -602,6 +602,7 @@ public class GUI extends JFrame {
                 if(eligibleAttack == true)
                 {
 
+                  boolean cooldown = false;
                     
                     enemyHPBAR.setValue((int) ((enemy.getHealth() / enemy.getMaxHealth()) * 100)); //update enemy HPBar
 
@@ -633,23 +634,20 @@ public class GUI extends JFrame {
                           if(e.getThisEffect() == Effect.EffectType.ATTACK4_COOLDOWN)
                           {
                             randomNumber = 1;// if this attack is on cooldown, use a normal
+                            cooldown = true;
                           }
                           
                         }
 
-
-                        prevHealth = player.getHealth();
-                        attackWorked = enemy.attack(randomNumber, player, enemy); 
-                        //boss uses their 4th attack on the player
-                        dmgDone = prevHealth-player.getHealth();
-                        if(attackWorked) {
-                          outputTextArea.append(String.format("The boss has hit you with its ultimate attack for %.2f damage!\n", dmgDone));
-                          outputTextArea.append("The boss has applied a strong bleed on you for 7 turns.\n");
-                        }
-                        else 
+                        if(cooldown == false)
                         {
-                          outputTextArea.append("The boss has missed its ultimate attack.\n");
+                          prevHealth = player.getHealth();
+                          attackWorked = enemy.attack(randomNumber, player, enemy); 
+                          //boss uses their 4th attack on the player
+                          dmgDone = prevHealth-player.getHealth();
                         }
+
+
                         
                     }
 
@@ -667,19 +665,19 @@ public class GUI extends JFrame {
                           Effect e = effectIterator.next();
                           if(e.getThisEffect() == Effect.EffectType.ATTACK3_COOLDOWN)
                           {
-                            randomNumber = 1;// if this attack is on cooldown, use a normal
+                            randomNumber = 1;// if this attack is on cooldown, use a normal 
+                            cooldown = true;
                           }
                           
                         }
 
-
-
-
-                      prevHealth = player.getHealth();
-                      attackWorked = enemy.attack(randomNumber, player, enemy); 
-                      //boss uses their 3rd attack on the player
-                      dmgDone = prevHealth-player.getHealth();
-                      outputTextArea.append("The boss has buffed its damage for 5 turns with its second special.\n");
+                        if(cooldown == false)
+                        {
+                          prevHealth = player.getHealth();
+                          attackWorked = enemy.attack(randomNumber, player, enemy); 
+                          //boss uses their 4th attack on the player
+                          dmgDone = prevHealth-player.getHealth();
+                        }
                             
                         
                     }
@@ -698,88 +696,20 @@ public class GUI extends JFrame {
                           if(e.getThisEffect() == Effect.EffectType.ATTACK2_COOLDOWN)
                           {
                             randomNumber = 1;// if this attack is on cooldown, use a normal
+                            cooldown = true;
                           }
                           
                         }
 
-
-
-
-                              prevHealth = player.getHealth();
-                              attackWorked = enemy.attack(randomNumber, player, enemy); 
-                              //enemy uses their 2nd attack on the player
-                              dmgDone = prevHealth-player.getHealth();
-                              if(((EnemyMonster) enemy).getEnemyType() == EnemyMonster.BasicEnemies.GORILLA) //if fighting the boss
-                              {
-                                if(attackWorked) 
-                                {
-                                  outputTextArea.append(String.format("The boss has hit you with a special attack for %.2f damage!\n", dmgDone));
-                                  outputTextArea.append("The boss has decreased your defense and dodge for 1 turn.\n");
-                                }
-                                else 
-                                {
-                                  outputTextArea.append("The boss has missed its special attack.\n");
-                                }
-                              }
-
-                              if(((EnemyMonster) enemy).getEnemyType() == EnemyMonster.BasicEnemies.WASP)
-                              {
-                                if(attackWorked) {
-                                  outputTextArea.append(String.format("The enemy has hit you with its special attack for %.2f damage!\n", dmgDone));
-                                  outputTextArea.append("The enemy has applied a bleed on you for 6 turns.\n");
-                                }
-                                else {
-                                  outputTextArea.append("The enemy's special attack missed.\n");
-                                }
-                              }
-
-                              if(((EnemyMonster) enemy).getEnemyType() == EnemyMonster.BasicEnemies.TOAD)
-                              {
-                                if(attackWorked) {
-                                  outputTextArea.append(String.format("The enemy has hit you with its special attack for %.2f damage!\n", dmgDone));
-                                }
-                                else {
-                                  outputTextArea.append("The enemy's special attack missed.\n");
-                                }
-                              }
-
-                              if(((EnemyMonster) enemy).getEnemyType() == EnemyMonster.BasicEnemies.CAT)
-                              {
-                                outputTextArea.append("The enemy has increased its dodge for 3 turns.\n");
-                              }
-
-                              if(((EnemyMonster) enemy).getEnemyType() == EnemyMonster.BasicEnemies.ELEPHANT)
-                              {
-                                outputTextArea.append("The enemy has decreased your defense for 2 turns.\n");
-                              }
-
-                              if(((EnemyMonster) enemy).getEnemyType() == EnemyMonster.BasicEnemies.SNAIL)
-                              {
-                                outputTextArea.append("The enemy has applied poison on you for 4 turns.\n");
-                              }
-
-                              if(((EnemyMonster) enemy).getEnemyType() == EnemyMonster.BasicEnemies.CROCODILE)
-                              {
-                                outputTextArea.append("The enemy has increased its damage for 3 turns.\n");
-                              }
-
-                              if(((EnemyMonster) enemy).getEnemyType() == EnemyMonster.BasicEnemies.RHINO)
-                              {
-                                if(attackWorked) {
-                                  outputTextArea.append(String.format("The enemy has hit you with its special attack for %.2f damage!\n", dmgDone));
-                                  outputTextArea.append("The enemy has applied a bleed on you for 3 turns and increased its dodge for 3 turns.\n");
-                                }
-                                else {
-                                  outputTextArea.append("The enemy's special attack missed.\n");
-                                }
-                              }
-
+                        if(cooldown == false)
+                        {
+                          prevHealth = player.getHealth();
+                          attackWorked = enemy.attack(randomNumber, player, enemy); 
+                          //boss uses their 4th attack on the player
+                          dmgDone = prevHealth-player.getHealth();
+                        }
+                              
                             
-                        
-
-
-
-
 
                     }
 
@@ -811,6 +741,126 @@ public class GUI extends JFrame {
                         }
                       }
                     }
+
+
+
+
+                    switch(randomNumber)
+                    {
+                      case 4:
+                      {
+                        if(attackWorked) {
+                          outputTextArea.append(String.format("The boss has hit you with its ultimate attack for %.2f damage!\n", dmgDone));
+                          outputTextArea.append("The boss has applied a strong bleed on you for 7 turns.\n");
+                        }
+                        else 
+                        {
+                          outputTextArea.append("The boss has missed its ultimate attack.\n");
+                        }
+
+                        break;
+
+                      }
+
+
+                      case 3:
+                      {
+                        outputTextArea.append("The boss has buffed its damage for 5 turns with its second special.\n");
+                        break;
+                      }
+
+                      case 2:
+                      {
+
+                        if(((EnemyMonster) enemy).getEnemyType() == EnemyMonster.BasicEnemies.GORILLA) //if fighting the boss
+                        {
+                          if(attackWorked) 
+                          {
+                            outputTextArea.append(String.format("The boss has hit you with a special attack for %.2f damage!\n", dmgDone));
+                            outputTextArea.append("The boss has decreased your defense and dodge for 1 turn.\n");
+                          }
+                          else 
+                          {
+                            outputTextArea.append("The boss has missed its special attack.\n");
+                          }
+                        }
+
+                        if(((EnemyMonster) enemy).getEnemyType() == EnemyMonster.BasicEnemies.WASP)
+                        {
+                          if(attackWorked) {
+                            outputTextArea.append(String.format("The enemy has hit you with its special attack for %.2f damage!\n", dmgDone));
+                            outputTextArea.append("The enemy has applied a bleed on you for 6 turns.\n");
+                          }
+                          else {
+                            outputTextArea.append("The enemy's special attack missed.\n");
+                          }
+                        }
+
+                        if(((EnemyMonster) enemy).getEnemyType() == EnemyMonster.BasicEnemies.TOAD)
+                        {
+                          if(attackWorked) {
+                            outputTextArea.append(String.format("The enemy has hit you with its special attack for %.2f damage!\n", dmgDone));
+                          }
+                          else {
+                            outputTextArea.append("The enemy's special attack missed.\n");
+                          }
+                        }
+
+                        
+                        if(((EnemyMonster) enemy).getEnemyType() == EnemyMonster.BasicEnemies.CAT)
+                        {
+                          outputTextArea.append("The enemy has increased its dodge for 3 turns.\n");
+                        }
+
+                        if(((EnemyMonster) enemy).getEnemyType() == EnemyMonster.BasicEnemies.ELEPHANT)
+                        {
+                          outputTextArea.append("The enemy has decreased your defense for 2 turns.\n");
+                        }
+
+                        if(((EnemyMonster) enemy).getEnemyType() == EnemyMonster.BasicEnemies.SNAIL)
+                        {
+                          outputTextArea.append("The enemy has applied poison on you for 4 turns.\n");
+                        }
+
+                        if(((EnemyMonster) enemy).getEnemyType() == EnemyMonster.BasicEnemies.CROCODILE)
+                        {
+                          outputTextArea.append("The enemy has increased its damage for 3 turns.\n");
+                        }
+
+                        if(((EnemyMonster) enemy).getEnemyType() == EnemyMonster.BasicEnemies.RHINO)
+                        {
+                          if(attackWorked) {
+                            outputTextArea.append(String.format("The enemy has hit you with its special attack for %.2f damage!\n", dmgDone));
+                            outputTextArea.append("The enemy has applied a bleed on you for 3 turns and increased its dodge for 3 turns.\n");
+                          }
+                          else {
+                            outputTextArea.append("The enemy's special attack missed.\n");
+                          }
+                        }
+
+
+
+                        break;
+                      }
+
+
+                    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                     playerHPBAR.setValue((int) ((player.getHealth() / player.getMaxHealth()) * 100)); //update player HPBar
 

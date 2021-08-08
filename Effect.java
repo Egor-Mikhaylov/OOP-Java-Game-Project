@@ -150,29 +150,29 @@ public class Effect {
 
             case debuffPoison: 
             {
-              owner.setHealth((float) (owner.getHealth()-(8))); //-8 health per turn (medium duration)
-              outputEffectsText += "You have taken 8 damage from poison. \n";
+              owner.setHealth((float) (owner.getHealth()-(24))); //-8 health per turn (medium duration)
+              outputEffectsText += "You have taken 24 damage from poison. \n";
               break;
             }
 
             case debuffBleed: 
             {
-              owner.setHealth((float) (owner.getHealth()-(4))); //-4 health per turn (long duration)
-              outputEffectsText += "You have taken 4 damage from your bleeding. \n";
+              owner.setHealth((float) (owner.getHealth()-(15))); //-4 health per turn (long duration)
+              outputEffectsText += "You have taken 15 damage from your bleeding. \n";
               break;
             }
 
             case debuffBurn: 
             {
-              owner.setHealth((float) (owner.getHealth()-(12))); //-12 health per turn(short duration)
-              outputEffectsText += "You have taken 12 damage from burning. \n";
+              owner.setHealth((float) (owner.getHealth()-(25))); //-12 health per turn(short duration)
+              outputEffectsText += "You have taken 25 damage from burning. \n";
               break;
             }
 
             case debuffStrongBurn: 
             {
-              owner.setHealth((float) (owner.getHealth()-(25))); //-25 health per turn (short but deadly)
-              outputEffectsText += "You have taken 25 damage from your Strong Burn. \n";
+              owner.setHealth((float) (owner.getHealth()-(100))); //-25 health per turn (short but deadly)
+              outputEffectsText += "You have taken 100 damage from your Strong Burn. \n";
               break;
             }
 
@@ -185,7 +185,7 @@ public class Effect {
 
             case debuffDamage: 
             {
-              owner.setDamage((float) (owner.getDamage()*.90)); //10% decrease to damage
+              owner.setDamage((float) (owner.getDamage()*.80)); //20% decrease to damage
               
               break;
             }
@@ -281,15 +281,15 @@ public class Effect {
 
             case BOSS_BUFF_DAMAGE:
             {
-              owner.setDamage((float)(owner.getDamage() * 1.025)); //increase damage by 2.5%, lasts a bunch of turns
+              owner.setDamage((float)(owner.getDamage() * 1.05)); //increase damage by 5%, lasts a bunch of turns
               
               break;
             }
             
             case BOSS_DEBUFF_BLEED:
             {
-              owner.setHealth((float) (owner.getHealth() - 40.0)); //40 damage per tick
-              outputEffectsText += "You have taken 40 damage from the boss's bleed. \n";
+              owner.setHealth((float) (owner.getHealth() - 75.0)); //40 damage per tick
+              outputEffectsText += "You have taken 75 damage from the boss's bleed. \n";
               break;
             }
 
