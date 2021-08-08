@@ -352,6 +352,8 @@ public class GUI extends JFrame {
                 }
 
 
+                outputTextArea.setText("An enemy " + enemy.getName() + " approaches!");
+
             }
             else if(playerIsChoosingAMonster == false) //game is in fighting phase
             {
@@ -959,7 +961,15 @@ public class GUI extends JFrame {
                             //update ability buttons
                             updateAbilityButtons(((PlayerMonster)player));
 
-                            outputTextArea.setText( " ");
+                            if(fightCounter < 5)
+                            {
+                              outputTextArea.setText("An enemy " + enemy.getName() + " approaches!");
+                            }
+                            else
+                            {
+                              outputTextArea.setText("The legendary boss enemy " + enemy.getName() + " approaches!");
+                            }
+
 
 
                         }
