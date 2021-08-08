@@ -22,7 +22,6 @@ public class Game {
        
         GUI gui = new GUI();
 
-        //update a text area whenever something happens, such as using an attack
         
     }
 }
